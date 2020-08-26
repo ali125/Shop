@@ -1,0 +1,46 @@
+<%- include('../layout/header'); %>
+
+<div class="head-page">
+    <h1><%= title %></h1>
+</div>
+
+<form method="POST" action="/admin/users/add">
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-6">
+            <label for="first_name">نام</label>
+            <input type="text" class="form-control" name="first_name" id="first_name" />
+        </div>
+        <div class="form-group col-xs-12 col-sm-6">
+            <label for="last_name">نام خانوادگی</label>
+            <input type="text" class="form-control" name="last_name" id="last_name" />
+        </div>
+    </div>
+<!--    <div class="form-group">-->
+<!--        <label for="username">نام کاربری</label>-->
+<!--        <input type="text" class="form-control" name="username" id="username" />-->
+<!--    </div>-->
+    <div class="form-group">
+        <label for="password">رمزعبور</label>
+        <input type="text" class="form-control" name="password" id="password" />
+    </div>
+    <div class="form-group">
+        <label for="email">ایمیل</label>
+        <input type="email" class="form-control" name="email" id="email" />
+    </div>
+    <div class="form-group">
+        <label for="mobile">موبایل</label>
+        <input type="tel" class="form-control" name="mobile" id="mobile" />
+    </div>
+    <div class="form-group">
+        <label for="roles">نقش</label>
+        <select class="form-control" id="roles" name="role_id">
+            <% roles.forEach(role =>{ %>
+                <option value="<%= role.id %>"><%= role.title %></option>
+            <% }) %>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">ثبت کاربر</button>
+</form>
+
+
+<%- include('../layout/footer'); %>

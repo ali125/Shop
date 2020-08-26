@@ -1,0 +1,48 @@
+<%- include('../layout/table-head'); %>
+<% if(data.length > 0) { %>
+    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>عکس</th>
+            <th>عنوان</th>
+            <th>عنوانک</th>
+            <th>توضیحات</th>
+            <th>دسته بندی</th>
+            <th></th>
+        </tr>
+
+        </thead>
+        <tbody>
+        <% data.forEach(item =>{ %>
+            <tr>
+                <th scope="row"><%= item.id %></th>
+                <td>
+                    <% if(item.stocks.length > 0 && item.stocks[0].media.length > 0) { %>
+                        <img src="/uploads/media/<%= item.stocks[0].media[0].filename %>" alt="<%= item.title %>" />
+                    <% } else { %>
+                            <img src="/images/default.jpg" alt="<%= item.title %>" />
+                    <% } %>
+                </td>
+                <td><%= item.title %></td>
+                <td><%= item.slug %></td>
+                <td><%= item.short_content %></td>
+                <td>
+                    <% item.categories.forEach(category =>{ %>
+                        <span class="badge badge-info"><%= category.name %></span>
+                    <% }); %>
+                </td>
+                <td>
+                    <a href="/admin/products/<%= item.id %>/edit" class="btn btn-sm btn-warning">ویرایش</a>
+                    <a href="/admin/products/<%= item.id %>/delete" class="btn btn-sm btn-danger">حذف</a>
+                    <a href="/admin/products/<%= item.id %>" class="btn btn-sm btn-info">مشاهده</a>
+                </td>
+            </tr>
+        <% }); %>
+        </tbody>
+    </table>
+
+<% } else { %>
+    <h1>محصولی یافت نشد.</h1>
+<% } %>
+<%- include('../layout/table-foot'); %>

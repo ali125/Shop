@@ -1,0 +1,52 @@
+<%- include('../layout/header'); %>
+
+<div class="head-page">
+    <h1><%= title %></h1>
+</div>
+
+<form method="POST" action="/admin/products/<%= product.id %>/update">
+    <div class="form-group">
+        <label for="title">عنوان</label>
+        <input type="text" class="form-control" name="title" id="title" value="<%= product.title %>"  />
+    </div>
+    <div class="form-group">
+        <label for="slug">عنوانک</label>
+        <input type="text" class="form-control" name="slug" id="slug" value="<%= product.slug %>" />
+    </div>
+    <div class="form-group">
+        <label for="description">توضیحات</label>
+        <textarea class="form-control" name="description" id="description"><%= product.description %></textarea>
+    </div>
+    <div class="form-group">
+        <label for="users">کاربر</label>
+        <select class="form-control" id="users" name="user_id">
+            <% users.forEach(user =>{ %>
+                <option <%= product.user_id === user.id ? 'selected' : '' %> value="<%= user.id %>"><%= user.full_name %></option>
+            <% }) %>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="users">دسته بندی</label>
+        <select class="form-control js-select2-single" name="category_id">
+            <option value="0">بدون دسته بندی</option>
+            <% categories.forEach(category =>{ %>
+                <option <% product.categories.forEach(p_category => { %><%= p_category.id === category.id ? 'selected' : '' %> <% }) %>
+                        value="<%= category.id %>"><%= category.name %></option>
+            <% }) %>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="users">تگ</label>
+        <select class="form-control js-select2-multiple" name="tags[]" multiple="multiple">
+            <% tags.forEach(tag =>{ %>
+                <option <% product.tags.forEach(p_tag => { %><%= p_tag.id === tag.id ? 'selected' : '' %> <% }) %>
+                        value="<%= tag.id %>"><%= tag.name %></option>
+            <% }) %>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">ثبت محصول</button>
+</form>
+
+
+<%- include('../layout/footer'); %>

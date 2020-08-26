@@ -1,0 +1,25 @@
+<%- include('../layout/form-head', { form_title: 'اطلاعات دسته بندی'  }); %>
+<form method="POST" action="/admin/categories/add" data-parsley-validate class="form-horizontal main-form form-label-left">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <label for="name">عنوان</label>
+    <input type="text" class="form-control" name="name" id="name" required />
+    <label for="slug">عنوانک</label>
+    <input type="text" class="form-control" name="slug" id="slug" />
+    <label for="parents">والد</label>
+    <select class="form-control" id="parents" name="parent_id">
+        <option value="0">بدون والد</option>
+        <% categories.forEach(cat =>{ %>
+            <option value="<%= cat.id %>"><%= cat.name %></option>
+        <% }) %>
+    </select>
+    <label for="users">کاربر</label>
+    <select class="form-control" id="users" name="user_id" required>
+        <% users.forEach(user =>{ %>
+            <option value="<%= user.id %>"><%= user.full_name %></option>
+        <% }) %>
+    </select>
+    <%- include('../layout/form-buttons'); %>
+</form>
+
+<%- include('../layout/form-foot'); %>
+

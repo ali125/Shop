@@ -1,0 +1,138 @@
+<%- include('../layout/header'); %>
+
+<div class="">
+    <%- include('../layout/head-page'); %>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>افزودن <%= title %> جدید</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Settings 1</a>
+                                <a class="dropdown-item" href="#">Settings 2</a>
+                            </div>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <form method="post" action="/admin/settings/product/<%= parent_data.slug %>/add" data-parsley-validate class="form-horizontal main-form form-label-left">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <label for="meta_key">عنوان</label>
+                                <input type="text" class="form-control" name="meta_key" id="meta_key" />
+
+                                <label for="meta_value">مقدار</label>
+                                <% if(parent_data.type === 'color') { %>
+                                    <div class="input-group demo2">
+                                        <input type="text" id="meta_value" name="meta_value" class="form-control" value="#fff" />
+                                        <span class="input-group-addon"><i></i></span>
+                                    </div>
+                                <% } else { %>
+                                    <input type="text" id="meta_value" name="meta_value" class="form-control" />
+                                <% } %>
+
+
+                                <% if(false && parent_data.terms.length > 0) { %>
+                                    <label for="parent_id">مقدار</label>
+                                    <select class="form-control" id="parent_id" name="parent_id">
+                                        <% parent_data.terms.forEach(p =>{ %>
+                                            <option value="">-- انتخاب دسته والد --</option>
+                                            <option value="<%= p.id %>"><%= p.title %></option>
+                                        <% }) %>
+                                    </select>
+                                <% } %>
+                                <%- include('../layout/form-buttons'); %>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>لیست <%= title %> ها</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Settings 1</a>
+                                <a class="dropdown-item" href="#">Settings 2</a>
+                            </div>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card-box table-responsive">
+                                <p class="text-muted font-13 m-b-30">
+                                    Responsive is an extension for DataTables that resolves that problem by optimising the table's layout for different screen sizes through the dynamic insertion and removal of columns from the table.
+                                </p>
+                                <% if(data.length > 0) { %>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>عنوان</th>
+                                            <th>مقدار</th>
+                                            <% if(parent_data.terms.length > 0) { %>
+                                                <th>دسته والد</th>
+                                            <% } %>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <% data.forEach(item =>{ %>
+                                            <tr>
+                                                <td><%= item.id %></td>
+                                                <td><%= item.meta_key %></td>
+                                                <td>
+                                                    <% if(item.term.type === 'color') { %>
+                                                    <span class="setting-color-show">
+                                                        <% item.meta_value ? item.meta_value.split(',').forEach(subItem => { %>
+                                                            <span style="background-color: <%= subItem.trim() %>"></span>
+                                                        <% }) : '<span></span>' %>
+                                                    </span>
+                                                    <% } else { %>
+                                                        <%= item.meta_value %>
+                                                    <% } %>
+                                                </td>
+                                                <% if(parent_data.terms.length > 0) { %>
+                                                    <td><%= item.term.title %></td>
+                                                <% } %>
+                                                <td>
+                                                    <a href="/admin/settings/product/<%= parent_data.slug %>/<%= item.id %>/delete" class="btn btn-sm btn-danger">حذف</a>
+                                                </td>
+                                            </tr>
+                                        <% }) %>
+                                        </tbody>
+                                    </table>
+                                <% } else { %>
+                                    <h1>داده ای یافت نشد.</h1>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<%- include('../layout/footer'); %>

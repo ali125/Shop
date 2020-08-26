@@ -1,0 +1,20 @@
+<%- include('../layout/form-head', { form_title: title }); %>
+
+<form method="POST" action="/admin/order/add"
+      data-parsley-validate
+      class="form-horizontal main-form form-label-left">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+    <label for="name">نام گیرنده</label>
+    <input type="text" class="form-control" name="name" id="name" required />
+
+    <label for="slug">توضیحات (اختیاری)</label>
+    <input type="text" class="form-control" name="slug" id="slug" />
+
+    <label for="slug">توضیحات (اختیاری)</label>
+    <input type="text" class="form-control" name="slug" id="slug" />
+    <%- include('../layout/form-buttons'); %>
+</form>
+
+<%- include('../layout/form-foot'); %>
+

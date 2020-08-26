@@ -1,0 +1,50 @@
+
+<%- include('../layout/form-head', { form_title: 'اطلاعات محصول' , col: 6 }); %>
+            <form action="/admin/products/<%= product.id %>/update" data-parsley-validate class="form-horizontal form-label-left">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <div class="media"></div>
+                <label for="title">عنوان * :</label>
+                <input type="text" class="form-control" name="title" id="title" value="<%= product.title %>" required />
+
+                <label for="slug">عنوانک :</label>
+                <input type="text" id="slug" class="form-control" name="slug" value="<%= product.slug %>"  />
+
+                <label for="users">دسته بندی</label>
+                <select class="form-control js-select2-single" name="category_id">
+                    <option value="0">بدون دسته بندی</option>
+                    <% categories.forEach(category =>{ %>
+                        <option <% product.categories.forEach(p_category => { %><%= p_category.id === category.id ? 'selected' : '' %> <% }) %>
+                                value="<%= category.id %>"><%= category.name %></option>
+                    <% }) %>
+                </select>
+
+                <label for="users">تگ</label>
+                <select class="form-control js-select2-multiple" name="tags[]" multiple="multiple">
+                    <% tags.forEach(tag =>{ %>
+                        <option <% product.tags.forEach(p_tag => { %><%= p_tag.id === tag.id ? 'selected' : '' %> <% }) %>
+                                value="<%= tag.id %>"><%= tag.name %></option>
+                    <% }) %>
+                </select>
+                <label for="users">کاربر</label>
+                <select class="form-control" id="users" name="user_id" required>
+                    <% users.forEach(user =>{ %>
+                        <option <%= product.user_id === user.id ? 'selected' : '' %> value="<%= user.id %>"><%= user.full_name %></option>
+                    <% }) %>
+                </select>
+
+                <div class="ln_solid"></div>
+
+                <label for="summernote">توضیحات</label>
+
+                <textarea rows="5" id="summernote" name="description"><%= product.description %></textarea>
+                <%- include('../layout/form-buttons'); %>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="col-md-6 col-sm-12 ">
+    <%- include('../layout/form-upload'); %>
+
+
+<%- include('../layout/form-foot'); %>
+

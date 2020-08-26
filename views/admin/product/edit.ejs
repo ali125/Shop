@@ -1,0 +1,264 @@
+<%- include('../layout/header'); %>
+<div class="">
+    <%- include('../layout/head-page'); %>
+    <form method="post" action="/admin/products/<%= product.id %>/update" data-parsley-validate class="form-horizontal main-form form-label-left">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <% if(product.stocks.length > 0) { %>
+            <input type="hidden" name="[stock][0][id]" value="<%= product.stocks[0].id %>" />
+        <% } %>
+        <div id="media_upload">
+            <% if(product.stocks.length > 0 && product.stocks[0].media) { %>
+                <% product.stocks[0].media.forEach(item => { %>
+                    <input type="hidden" name="[stock][0][media][]" value="<%= item.id %>" />
+                <% }) %>
+            <% } %>
+
+        </div>
+        <div class="" role="tabpanel" data-example-id="togglable-tabs">
+            <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#information" id="information-tab" role="tab" data-toggle="tab" aria-expanded="true">اطلاعات محصول</a>
+                </li>
+                <li role="presentation" class="">
+                    <a href="#more_information" role="tab" id="more-information-tab" data-toggle="tab" aria-expanded="false">اطلاعات جزئی</a>
+                </li>
+            </ul>
+            <div id="adminTabs" class="tab-content">
+                <div role="tabpanel" class="tab-pane active " id="information" aria-labelledby="information-tab">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 ">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>اطلاعات محصول <small>different form elements</small></h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a class="dropdown-item" href="#">Settings 1</a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="#">Settings 2</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+
+                                    <div class="media"></div>
+                                    <label for="title">عنوان * :</label>
+                                    <input type="text"
+                                           id="title"
+                                           class="form-control"
+                                           name="title"
+                                           value="<%= product.title %>"
+                                           required />
+
+                                    <label for="slug">عنوانک :</label>
+                                    <input type="text"
+                                           id="slug"
+                                           class="form-control"
+                                           name="slug"
+                                           value="<%= product.slug %>" />
+
+                                    <label for="category_id">دسته بندی</label>
+                                    <select class="form-control js-select2-single" id="category_id" name="category_id">
+                                        <option value="0">بدون دسته بندی</option>
+                                        <% categories.forEach(category =>{ %>
+                                            <option <% product.categories.forEach(p_category => { %><%= p_category.id === category.id ? 'selected' : '' %> <% }) %>
+                                                    value="<%= category.id %>"><%= category.name %></option>
+                                        <% }) %>
+                                    </select>
+
+                                    <label for="tags">تگ</label>
+                                    <select class="form-control js-select2-multiple" name="tags[]" id="tags" multiple="multiple">
+                                        <% tags.forEach(tag =>{ %>
+                                            <option <% product.tags.forEach(p_tag => { %><%= p_tag.id === tag.id ? 'selected' : '' %> <% }) %>
+                                                    value="<%= tag.id %>"><%= tag.name %></option>
+                                        <% }) %>
+                                    </select>
+
+                                    <label for="users">کاربر</label>
+                                    <select class="form-control" id="users" name="user_id" required>
+                                        <% users.forEach(user =>{ %>
+                                            <option <%= product.user_id === user.id ? 'selected' : '' %>
+                                                    value="<%= user.id %>"><%= user.full_name %></option>
+                                        <% }) %>
+                                    </select>
+
+                                    <div class="ln_solid"></div>
+
+                                    <label for="summernote">توضیحات</label>
+
+                                    <!--                        <textarea name="description" id="formEditor" class="form-editor"></textarea>-->
+                                    <textarea rows="5" id="summernote" name="content"><%= product.content %></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <%- include('../layout/file-uploader', {
+                                upload_id: "[stock][0][media][]",
+                                data: product.stocks.length > 0 && product.stocks[0].media ? product.stocks[0].media : null
+                            }); %>
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>اطلاعات جزئی محصول <small>different form elements</small></h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a class="dropdown-item" href="#">Settings 1</a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="#">Settings 2</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <label for="price[0]">قیمت * :</label>
+                                    <input type="text"
+                                           id="price[0]"
+                                           class="form-control"
+                                           name="[stock][0][price]"
+                                            <% if(product.stocks.length > 0) { %>
+                                                value="<%= product.stocks[0].price %>"
+                                            <% } %>
+                                           required />
+
+                                    <label for="count[0]">تعداد :</label>
+                                    <input type="number"
+                                           id="count[0]"
+                                           class="form-control"
+                                           name="[stock][0][count]"
+                                            <% if(product.stocks.length > 0) { %>
+                                                value="<%= product.stocks[0].count %>"
+                                            <% } else { %>
+                                                value="0"
+                                            <% } %>/>
+
+                                    <% details.forEach(item =>{ %>
+                                        <label for="<%= item.slug %>[0]"><%= item.title %>:</label>
+                                        <select id="<%= item.slug %>[0]" class="form-control js-select2-pmeta" name="[stock][0][<%= item.slug %>]">
+                                            <option value="">انتخاب <%= item.title %></option>
+                                            <% if(item.terms.length > 0) { %>
+                                                <% item.terms.forEach(t =>{ %>
+                                                    <optgroup label="<%= t.title %>">
+                                                        <% t.termmeta.forEach(meta =>{ %>
+                                                            <option <% if(product.stocks.length > 0) product.stocks[0].termmeta.forEach(t => { %><%= t.id === meta.id ? 'selected' : '' %> <% }) %>
+                                                                    value="<%= meta.id %>"><%= meta.meta_value %></option>
+                                                        <% }) %>
+                                                    </optgroup>
+                                                <% }) %>
+                                            <% } else { %>
+                                                <% item.termmeta.forEach(meta =>{ %>
+                                                    <option <% if(product.stocks.length > 0) product.stocks[0].termmeta.forEach(t => { %><%= t.id === meta.id ? 'selected' : '' %> <% }) %>
+                                                            data-colors="<%= meta.meta_value %>"
+                                                            value="<%= meta.id %>"><%= meta.meta_key %></option>
+                                                <% }) %>
+                                            <% } %>
+                                        </select>
+                                    <% }) %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane active" id="more_information" aria-labelledby="more-information-tab">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 ">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>اطلاعات جزئی محصول <small>different form elements</small></h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a class="dropdown-item" href="#">Settings 1</a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="#">Settings 2</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <label for="price[1]">قیمت :</label>
+                                    <input type="text"
+                                           id="price[1]"
+                                           class="form-control"
+                                           name="[stock][1][price]"
+                                            <% if(product.stocks.length > 1) { %>
+                                            value="<%= product.stocks[1].price %>"
+                                            <% } %>
+                                           required />
+
+                                    <label for="count[1]">تعداد :</label>
+                                    <input type="number"
+                                           id="count[1]"
+                                           class="form-control"
+                                           name="[stock][1][count]"
+                                            <% if(product.stocks.length > 1) { %>
+                                                   value="<%= product.stocks[1].count %>"
+                                            <% } else { %>
+                                                value="0"
+                                            <% } %> />
+
+                                    <% details.forEach(item =>{ %>
+                                        <div class="form-group">
+                                            <label for="<%= item.slug %>[1]"><%= item.title %>:</label>
+                                            <select id="<%= item.slug %>[1]" class="form-control js-select2-pmeta" name="[stock][1][<%= item.slug %>]">
+                                                <option value="">انتخاب <%= item.title %></option>
+                                                <% if(item.terms.length > 0) { %>
+                                                    <% item.terms.forEach(t =>{ %>
+                                                        <optgroup label="<%= t.title %>">
+                                                            <% t.termmeta.forEach(meta =>{ %>
+                                                                <option <% if(product.stocks.length > 1) product.stocks[1].termmeta.forEach(t => { %><%= t.id === meta.id ? 'selected' : '' %> <% }) %>
+                                                                        value="<%= meta.id %>"><%= meta.meta_value %></option>
+                                                            <% }) %>
+                                                        </optgroup>
+                                                    <% }) %>
+                                                <% } else { %>
+                                                    <% item.termmeta.forEach(meta =>{ %>
+                                                        <option <% if(product.stocks.length > 1) product.stocks[1].termmeta.forEach(t => { %><%= t.id === meta.id ? 'selected' : '' %> <% }) %>
+                                                                data-colors="<%= meta.meta_value %>"
+                                                                value="<%= meta.id %>"><%= meta.meta_key %></option>
+                                                    <% }) %>
+                                                <% } %>
+                                            </select>
+                                        </div>
+                                    <% }) %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 ">
+                            <%- include('../layout/file-uploader', {
+                                upload_id: "[stock][1][media][]",
+                                data: product.stocks.length > 1 && product.stocks[1].media ? product.stocks[1].media : null
+                            }); %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include('../layout/form-buttons'); %>
+    </form>
+</div>
+
+<%- include('../layout/footer'); %>
+
+

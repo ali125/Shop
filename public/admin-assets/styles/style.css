@@ -1,0 +1,40 @@
+* {
+  direction: rtl;
+  text-align: right;
+}
+body {
+  font: 14px IRANSans, "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.head-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0;
+  margin: 1rem 0;
+}
+.head-page h1 {
+  font-size: 1.5rem;
+}
+
+table td,
+table th{
+  text-align: center;
+}
+
+table img {
+  font-size: 0;
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-image: url("/images/default-user.jpg");
+  background-size: contain;
+  background-position: center center;
+  background-position: center center;
+  object-fit: cover;
+}
+

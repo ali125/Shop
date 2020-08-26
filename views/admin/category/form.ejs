@@ -1,0 +1,24 @@
+<%- include('../layout/form-head', { form_title: 'اطلاعات دسته بندی'  }); %>
+
+<form method="POST" action="/admin/categories/<%= editing ? category.id +'/update' : 'add' %>" data-parsley-validate class="form-horizontal main-form form-label-left">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <label for="name">عنوان</label>
+    <input type="text" class="form-control" name="name" id="name" value="<%= editing || hasError ? category.name : '' %>"  required />
+    <label for="slug">عنوانک</label>
+    <input type="text" class="form-control" name="slug" id="slug" value="<%= editing || hasError ? category.slug : '' %>" />
+    <label for="parents">والد</label>
+    <select class="form-control" id="parents" name="parent_id">
+        <option value="0">بدون والد</option>
+        <% categories.forEach(cat => { %>
+            <% if((editing || hasError) && cat.id !== category.id){ %>
+                <option <%= editing || hasError ? category.parent_id === cat.id ? 'selected' : '' : '' %> value="<%= cat.id %>">
+                    <%= cat.name %>
+                </option>
+            <% } %>
+        <% }) %>
+    </select>
+    <%- include('../layout/form-buttons'); %>
+</form>
+
+<%- include('../layout/form-foot'); %>
+

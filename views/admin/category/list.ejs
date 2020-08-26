@@ -1,0 +1,36 @@
+<%- include('../layout/table-head'); %>
+
+<% if(data.length > 0) { %>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">عنوان</th>
+        <th scope="col">عنوانک</th>
+        <th scope="col">زیر مجموعه</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+        <% data.forEach(item =>{ %>
+        <tr>
+            <th scope="row"><%= item.id %></th>
+            <td><%= item.name %></td>
+            <td><%= item.slug %></td>
+            <td><%= item.categories.length %></td>
+            <td>
+                <a href="/admin/categories/<%= item.id %>/edit" class="btn btn-sm btn-warning">ویرایش</a>
+                <a href="/admin/categories/<%= item.id %>/delete" class="btn btn-sm btn-danger">حذف</a>
+            </td>
+        </tr>
+        <% }); %>
+    </tbody>
+</table>
+
+<% } else { %>
+    <h1>دسته بندی یافت نشد.</h1>
+<% } %>
+
+<%- include('../layout/table-foot'); %>
+
+

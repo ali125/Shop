@@ -1,0 +1,43 @@
+<%- include('../layout/header'); %>
+
+<div class="head-page">
+    <h1><%= title %></h1>
+    <a href="/admin/media/add" class="btn btn-success">افزودن مدیا</a>
+</div>
+
+<% if(media.length > 0) { %>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">فایل</th>
+        <th scope="col">عنوان فایل</th>
+        <th scope="col">نوع</th>
+        <th scope="col">ارتباطات</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+        <% media.forEach(item =>{ %>
+        <tr>
+            <th scope="row"><%= item.id %></th>
+            <td><img src="<%= item.media_url %>" alt=""></td>
+            <td><%= item.filename %></td>
+            <td><%= item.type %></td>
+
+            <td><%= item.products.length > 0 ? 'محصولات' : 'بدون ارتباط' %></td>
+            <td>
+                <a href="/admin/media/<%= item.id %>/edit" class="btn btn-sm btn-warning">ویرایش</a>
+                <a href="/admin/media/<%= item.id %>/delete" class="btn btn-sm btn-danger">حذف</a>
+            </td>
+        </tr>
+        <% }); %>
+    </tbody>
+</table>
+
+<% } else { %>
+    <h1>محصولی یافت نشد.</h1>
+<% } %>
+
+
+<%- include('../layout/footer'); %>

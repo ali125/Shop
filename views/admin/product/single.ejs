@@ -1,0 +1,163 @@
+<%- include('../layout/header'); %>
+<div class="">
+    <%- include('../layout/head-page'); %>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2><%= title %></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Settings 1</a>
+                                <a class="dropdown-item" href="#">Settings 2</a>
+                            </div>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="col-md-5 col-sm-5 " style="border:0px solid #e5e5e5;">
+
+                        <h3 class="prod_title"><%= title %></h3>
+
+                        <p><%= content_text %></p>
+                        <br/>
+                        <% if(details.length > 0) { %>
+                        <div class="stock-meta">
+                            <h2>Available Colors</h2>
+                            <ul class="list-inline prod_color display-layout">
+                                <% details.forEach(color => { %>
+                                    <li data-stock-id="<%= color.id %>">
+                                        <p><%= color.text %></p>
+                                        <div class="color" style="background-color: <%= color.val %>"></div>
+                                    </li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                        <br/>
+                            <% details.forEach((color, ind) => { %>
+                                <% if(color.sizes.length > 0) { %>
+                                    <div class="stock-meta stock-meta-size" <% if(ind !== 0){ %> style="display: none;" <% } %> data-id="<%= color.id %>">
+                                        <h2>Size <small>Please select one</small></h2>
+                                        <ul class="list-inline prod_size display-layout">
+                                            <% color.sizes.forEach(size => { %>
+                                                <li data-stock-id="<%= size.stock_id %>">
+                                                    <button type="button" class="btn btn-default btn-xs"><%= size.text %></button>
+                                                </li>
+                                            <% }) %>
+                                        </ul>
+                                    </div>
+                                <% } %>
+                            <% }) %>
+                            <br/>
+                        <% } %>
+
+
+                        <% if(stocks.length > 0) { %>
+                            <div class="product-price-container">
+                                <% stocks.forEach((stock, ind) => { %>
+                                    <div class="product_price"
+                                        <% if(ind !== 0){ %> style="display: none;" <% } %>
+                                         data-stock-id="<%= stock.id %>" >
+                                        <h1 class="price"><%= stock.price %> تومان</h1>
+                                        <span class="price-tax">مالیات: <%= (stock.price/100)*0.9 %> تومان</span>
+                                        <br>
+                                    </div>
+                                <% }) %>
+                            </div>
+                            <div class="product-cart-form">
+                                <% stocks.forEach((stock, ind) => { %>
+                                    <form method="post" <% if(ind !== 0){ %> style="display: none;" <% } %>
+                                          data-stock-id="<%= stock.id %>"
+                                          action="/carts/<%= stock.id %>/add">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                        <button class="btn btn-default btn-lg">Add to Cart</button>
+                                    </form>
+                                <% }) %>
+                                <button type="button" class="btn btn-default btn-lg">Add to Wishlist</button>
+                            </div>
+                        <% } %>
+
+                    </div>
+                    <div class="col-md-7 col-sm-7 ">
+                        <% let mediaActive = false %>
+                        <% let hasMedia = false %>
+                        <% if(details.length > 0) { %>
+                            <% details.forEach(item=> { %>
+                                <% if(item.media && item.media.length > 0) { %>
+                                    <% hasMedia = true %>
+                                    <div class="product-images-gallery" <% if(mediaActive){ %> style="display: none;" <% } %> data-stock-id="<%= item.id %>">
+                                        <div class="product-image">
+                                            <img src="<%= item.media[0].media_url %>" alt="<%= title %>"/>
+                                        </div>
+                                        <ul class="product-gallery">
+                                            <% item.media.forEach(media => { %>
+                                                <li  data-src="<%= media.media_url %>" >
+                                                    <img data-img="<%= media.media_url %>" src="<%= media.media_url %>" alt="<%= title %>"/>
+                                                </li>
+                                            <% }) %>
+                                        </ul>
+                                    </div>
+                                    <% mediaActive = true %>
+                                <% } %>
+                            <% }) %>
+                        <% } %>
+                        <% if(!hasMedia)  { %>
+                        <div class="product-images">
+                            <div class="product-image">
+                                <img src="/images/default.jpg" alt="<%= title %>"/>
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
+
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs bar_tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                                   aria-controls="home" aria-selected="true">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                                   aria-controls="profile" aria-selected="false">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+                                   aria-controls="contact" aria-selected="false">Contact</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown
+                                aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan
+                                helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher
+                                synth. Cosby sweater eu banh mi, qui irure terr.
+                            </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.
+                                Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson
+                                artisan four loko farm-to-table craft beer twee. Qui photo
+                                booth letterpress, commodo enim craft beer mlkshk aliquip
+                            </div>
+                            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee
+                                squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson
+                                artisan four loko farm-to-table craft beer twee. Qui photo
+                                booth letterpress, commodo enim craft beer mlkshk
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../layout/footer'); %>

@@ -1,0 +1,59 @@
+<div class="row attach-detail">
+    <div class="col-md-6 col-sm-12 ">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>اطلاعات جزئی محصول <small>different form elements</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a class="dropdown-item" href="#">Settings 1</a>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Settings 2</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="media"></div>
+                <label for="price[1]">قیمت :</label>
+                <input type="text" id="price[1]" class="form-control" name="[stock][1][price]" />
+
+                <label for="count[1]">تعداد :</label>
+                <input type="text" id="count[1]" class="form-control" name="[stock][1][count]"  />
+
+                <% details.forEach(item =>{ %>
+                    <label for="<%= item.slug %>[1]"><%= item.title %>:</label>
+                    <select id="<%= item.slug %>[1]" class="form-control js-select2-pmeta" name="[stock][1][<%= item.slug %>]">
+                        <option value="">انتخاب <%= item.title %></option>
+                        <% if(item.terms.length > 0) { %>
+                            <% item.terms.forEach(t =>{ %>
+                                <optgroup label="<%= t.title %>">
+                                    <% t.termmeta.forEach(meta =>{ %>
+                                        <option value="<%= meta.id %>"><%= meta.meta_value %></option>
+                                    <% }) %>
+                                </optgroup>
+                            <% }) %>
+                        <% } else { %>
+                            <% item.termmeta.forEach(meta =>{ %>
+                                <option  <% if(item.type === 'color') { %>
+                                    data-colors="<%= meta.meta_value %>"
+                                        <% } %>
+                                    value="<%= meta.id %>"><%= meta.meta_key %></option>
+                            <% }) %>
+                        <% } %>
+                    </select>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-12 ">
+        <%- include('../layout/file-uploader', { upload_id: "[stock][1][media][]" }); %>
+    </div>
+</div>

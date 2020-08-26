@@ -1,0 +1,152 @@
+<%- include('../layout/header'); %>
+
+<div class="">
+    <%- include('../layout/head-page'); %>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>افزودن داده جدید</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Settings 1</a>
+                                <a class="dropdown-item" href="#">Settings 2</a>
+                            </div>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <form method="post" action="/admin/settings/add" data-parsley-validate class="form-horizontal main-form form-label-left">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <label for="title">عنوان</label>
+                                <input type="text" class="form-control" name="title" id="title" />
+
+                                <label for="slug">عنوانک</label>
+                                <input type="text" class="form-control" name="slug" id="slug" />
+
+                                <label for="type">نوع</label>
+                                <select class="form-control" name="type" id="type">
+                                    <optgroup label="-----------">
+                                        <option value="string">متن</option>
+                                        <option value="color">رنگ</option>
+                                        <option value="image">عکس</option>
+                                    </optgroup>
+                                    <optgroup label="-----------">
+                                        <option value="string-select-multi">متن - چند انتخاب</option>
+                                        <option value="color-select-multi">رنگ - چند انتخاب</option>
+                                        <option value="image-select-multi">عکس - چند انتخاب</option>
+                                    </optgroup>
+                                </select>
+
+                                <label for="parent_id">والد</label>
+                                <select class="form-control" name="parent_id" id="parent_id">
+                                    <option value="0">انتخاب والد</option>
+                                    <% parents.forEach(p =>{ %>
+                                        <option value="<%= p.id %>"><%= p.title %></option>
+                                        <% if(p.terms.length > 0) { %>
+                                        <optgroup label="--- زیر مجموعه <%= p.title %>">
+                                            <% p.terms.forEach(pc =>{ %>
+                                                <option value="<%= pc.id %>"><%= pc.title %></option>
+                                            <% }) %>
+                                        </optgroup>
+                                        <% } %>
+                                    <% }) %>
+                                </select>
+                                <%- include('../layout/form-buttons'); %>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>افزودن داده جدید</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Settings 1</a>
+                                <a class="dropdown-item" href="#">Settings 2</a>
+                            </div>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card-box table-responsive">
+                                <p class="text-muted font-13 m-b-30">
+                                    Responsive is an extension for DataTables that resolves that problem by optimising the table's layout for different screen sizes through the dynamic insertion and removal of columns from the table.
+                                </p>
+                                <% if(typeof data !== "undefined" && data.length > 0) { %>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">عنوان</th>
+                                            <th scope="col">عنوانک</th>
+                                            <th scope="col">نوع</th>
+                                            <th scope="col">زیر مجموعه ها</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <% data.forEach(item =>{ %>
+                                            <tr>
+                                                <td><%= item.id %></td>
+                                                <td><%= item.title %></td>
+                                                <td><%= item.slug %></td>
+                                                <td><%= item.type %></td>
+                                                <td>
+                                                    <% item.terms.forEach(t => { %>
+                                                        <span class="badge badge-info"><%= t.title %></span>
+                                                    <% }) %>
+                                                </td>
+                                                <td>
+                                                    <a href="/admin/settings/<%= item.id %>/delete" class="btn btn-sm btn-danger">حذف</a>
+                                                </td>
+                                            </tr>
+                                            <% item.terms.forEach(t => { %>
+                                                <tr>
+                                                    <td><%= t.id %></td>
+                                                    <td><%= t.title %></td>
+                                                    <td><%= t.slug %></td>
+                                                    <td><%= t.type %></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <a href="/admin/settings/<%= t.id %>/delete" class="btn btn-sm btn-danger">حذف</a>
+                                                    </td>
+                                                </tr>
+                                            <% }) %>
+                                        <% }) %>
+                                        </tbody>
+                                    </table>
+                                <% } else { %>
+                                    <h1>داده ای یافت نشد.</h1>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../layout/footer'); %>
