@@ -84,9 +84,7 @@ Product.init({
 User.hasMany(Product, {
     foreignKey: 'user_id'
 });
-Product.hasMany(Stock, {
-    foreignKey: 'product_id'
-});
+
 Product.sync();
 
 module.exports = Product;

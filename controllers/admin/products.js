@@ -40,7 +40,7 @@ const getAllTerms = async () => {
     }
     return details;
 };
-const setStock = async (product, body, stocks, edit = false) => {
+const setStock = async (product, body, stocks, edit = false, res) => {
     try {
         if(stocks.length > 0) {
             for(let s = 0 ; s < stocks.length ; s++) {
@@ -49,12 +49,10 @@ const setStock = async (product, body, stocks, edit = false) => {
                 delete stockItem.media;
                 if(stockItem.price.toString() !== "0" && stockItem.count.toString() !== "0") {
                     let stock_created = null;
-                    if(s === 1) debugger;
                     if(edit && stockItem.id) {
                         await Stock.update({
                             price: stockItem.price,
-                            count: Number(stockItem.count),
-                            user_id: body.user_id
+                            count: Number(stockItem.count)
                         }, {
                             where: { id: stockItem.id }
                         });
@@ -68,24 +66,23 @@ const setStock = async (product, body, stocks, edit = false) => {
                             user_id: body.user_id
                         });
                     }
-                    if(s === 1) debugger;
                     delete stockItem["price"];
                     delete stockItem["count"];
                     delete stockItem["media"];
                     _.map(stockItem, async (val, key) => {
-                        if(val) await stock_created.addTermmeta(val, { through: { model_slug: key } } );
+                        let temmeta = null;
+                        try {
+                            if(val) await stock_created.setTermmeta(val, { through: { model_slug: key } } );
+                        } catch(e) {
+                            console.log('setTermmeta Errors: ', e);
+                        }
+
                     });
-                    const media_list = []
+
+                    const media_list = [];
                     if(media_item && media_item.length > 0) {
                         for(let m = 0 ; m < media_item.length ; m++) {
                             media_list.push(media_item[m]);
-                            // const media_id = media_item[m];
-                            // if (media_id) {
-                            //     for (let m = 0; m < media_id.length; m++) {
-                            //         const media = await Media.findByPk(media_id[m]);
-                            //         stock_created.setMedia(media)
-                            //     }
-                            // }
                         }
                         await stock_created.setMedia(media_list);
                     }
@@ -130,6 +127,7 @@ exports.get = async (req, res, next) => {
                 include: [Termmeta, Media]
             }]
         });
+        // return res.send(data);
         let sub_stock = {};
         _.map(data.stocks, stock => {
             _.map(stock.termmeta, meta => {
@@ -208,7 +206,7 @@ exports.get = async (req, res, next) => {
             });
         });
         const details = _.map(sub_stock, s => s);
-        // return res.send(details);
+        // return res.send(data);
         renderView(req, res, {
             title: data.title,
             ...data,
@@ -296,7 +294,7 @@ exports.save = async (req, res, next) => {
             user_id,
         };
         const product_created = await Product.create(body);
-        await setStock(product_created, body, stocks);
+        await setStock(product_created, { ...req.body, user_id } , stocks, false, res);
         if(category_id && category_id !== 0) await product_created.setCategories(category_id);
         if(tags) await product_created.setTags(tags);
         const product = await Product.findByPk(product_created.id, {
@@ -305,6 +303,7 @@ exports.save = async (req, res, next) => {
                 include: [Termmeta]
             }],
         });
+        // return res.send({product});
         renderView(req, res, {
             product,
             redirect: '/admin/products'
@@ -414,7 +413,7 @@ exports.update = async (req, res, next) => {
         await Product.update(body,{
             where: { id }
         });
-        await setStock(get_product, body, stocks, true);
+        await setStock(get_product, req.body, stocks, true);
         const tags = _.filter(get_product.tags, t => inTags.indexOf(t.id) === -1);
         if(tags) await get_product.setTags(tags);
         if(category_id && category_id !== 0) await get_product.setCategories(category_id);
@@ -438,14 +437,8 @@ exports.destroy = async (req, res, next) => {
     try {
         const id = req.params.id;
         const product = await Product.findByPk(id, {
-            include: [Media, Stock]
+            include: [Stock]
         });
-
-        // const product = await Media;
-
-        // const product = await Product.destroy({
-        // product.removeStock(product.stocks);
-        // if(product.stocks)
         for(let s = 0 ; s < product.stocks.length ; s++) {
             const stock = product.stocks[s];
             await Stock.destroy({
@@ -453,16 +446,10 @@ exports.destroy = async (req, res, next) => {
                 force: true
             });
         }
-        // return res.send(product);
-        // res.send(product);
-        product.removeMedia(product.media);
         await Product.destroy({
             where: { id },
             force: true
         });
-        //     where: { id },
-        //     force: true
-        // });
         renderView(req, res, {
             product,
             redirect: '/admin/products'

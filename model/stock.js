@@ -1,6 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('./databaseConfig');
 const User = require('./user');
+const Product = require('./product');
 const Termmeta = require('./termmeta');
 
 class Stock extends Model {}
@@ -39,10 +40,22 @@ Stock.init({
 
 class Stock_Model extends Model {}
 Stock_Model.init({
-    stock_id: DataTypes.INTEGER,
-    model_id: DataTypes.INTEGER,
-    model_type: DataTypes.STRING,
-    model_slug: DataTypes.STRING
+    stock_id: {
+        type: DataTypes.INTEGER,
+        unique: false,
+    },
+    model_id: {
+        type: DataTypes.INTEGER,
+        unique: false,
+    },
+    model_type: {
+        type: DataTypes.STRING,
+        unique: false,
+    },
+    model_slug: {
+        type: DataTypes.STRING,
+        unique: false,
+    },
 }, {
     sequelize,
     modelName: 'stock_model',
@@ -51,10 +64,16 @@ Stock_Model.init({
     updatedAt: 'updated_at',
 });
 
+
 Stock.belongsTo(User, {
     foreignKey: 'user_id'
 });
-
+Product.hasMany(Stock, {
+    foreignKey: 'product_id'
+});
+Stock.belongsTo(Product, {
+    foreignKey: 'product_id'
+});
 Stock.belongsToMany(Termmeta, {
     through: {
         model: Stock_Model,
@@ -63,8 +82,7 @@ Stock.belongsToMany(Termmeta, {
             model_type: 'termmeta'
         }
     },
-    foreignKey: 'stock_id',
-    constraints: false
+    foreignKey: 'stock_id'
 });
 Termmeta.belongsToMany(Stock, {
     through: {
@@ -74,8 +92,7 @@ Termmeta.belongsToMany(Stock, {
             model_type: 'termmeta'
         }
     },
-    foreignKey: 'model_id',
-    constraints: false
+    foreignKey: 'model_id'
 });
 
 Stock.sync();

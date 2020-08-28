@@ -8,7 +8,8 @@
         <th scope="col">عکس</th>
         <th scope="col">محصول</th>
         <th scope="col">قیمت</th>
-        <th scope="col"></th>
+        <th scope="col">تعداد</th>
+        <th scope="col">قیمت نهایی</th>
     </tr>
     </thead>
     <tbody>
@@ -20,14 +21,15 @@
                      alt="<%= item.product.title %>">
             </td>
             <td><%= item.product.title %></td>
-            <td class="td-price"><%= item.cartItem.quantity * item.price %></td>
+            <td><%= item.price %></td>
             <td>
-                <span class="btn-group cart-quantity">
+                <span class="btn-group cart-quantity" data-max-count="<%= item.count %>">
                     <a href="/api/carts/<%= item.id %>/add" class="btn btn-sm btn-default cart-add">+</a>
                     <span class="btn btn-sm btn-default cart-quantity-label"><%= item.cartItem.quantity %></span>
                     <a href="/api/carts/<%= item.id %>/remove" class="btn btn-sm btn-default cart-remove">-</a>
                 </span>
             </td>
+            <td class="td-price"><%= item.cartItem.quantity * item.price %></td>
         </tr>
         <% }); %>
     </tbody>

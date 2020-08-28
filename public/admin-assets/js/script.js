@@ -163,41 +163,59 @@ $(document).ready(function() {
 
     $('.cart-quantity .cart-add, .cart-quantity .cart-remove').on('click', function(e) {
         e.preventDefault();
+        let exec = true;
         const $this = $(this);
+        const maxCount = $this.parent().data('max-count').toString();
+        const addBtn = $this.parent().find('.cart-add');
+        const removeBtn = $this.parent().find('.cart-remove');
+
         const quantityLabel = $this.parent().find('.cart-quantity-label');
+        const currentQuantity = $(quantityLabel).text();
         const quantityTd = $this.parentsUntil('tr').parent().find('.td-quantity');
         const priceTd = $this.parentsUntil('tr').parent().find('.td-price');
         const url = $this.attr('href');
         const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-        $.ajax({
-            credentials: 'same-origin', // <-- includes cookies in the request
-            headers: {
-                'CSRF-Token': csrfToken // <-- is the csrf token as a header
-            },
-            type: 'POST',
-            url,
-            success: (res) => {
-                if(!res.data) {
-                    $this.parentsUntil('tr').parent().remove();
-                } else {
-                    const quantity = res.data.stocks[0].cartItem.quantity;
-                    const price = res.data.stocks[0].price;
-                    const productPrice = Number(quantity) * Number(price);
-                    $(quantityLabel).text(quantity);
-                    $(quantityTd).text(quantity);
-                    $(priceTd).text(productPrice);
-                }
-            },
-            error: (err) => {
-                console.log('err', err);
-            },
-            async: true,
-            cache: false,
-            contentType: false,
-            processData: false,
-            timeout: 60000
-        })
+        if($this.hasClass('cart-add') && maxCount === currentQuantity) exec = false;
+        if($this.hasClass('cart-remove') && currentQuantity === "0") exec = false;
+
+        if(exec) {
+            $.ajax({
+                credentials: 'same-origin', // <-- includes cookies in the request
+                headers: {
+                    'CSRF-Token': csrfToken // <-- is the csrf token as a header
+                },
+                type: 'POST',
+                url,
+                success: (res) => {
+                    if(!res.data) {
+                        $this.parentsUntil('tr').parent().remove();
+                    } else {
+                        const quantity = res.data.stocks[0].cartItem.quantity;
+                        const price = res.data.stocks[0].price;
+                        const productPrice = Number(quantity) * Number(price);
+                        $(quantityLabel).text(quantity);
+                        $(quantityTd).text(quantity);
+                        $(priceTd).text(productPrice);
+                        console.log(maxCount, quantity.toString(), maxCount === quantity.toString());
+
+                        if(maxCount === quantity.toString()) $(addBtn).addClass('disabled');
+                        else $(addBtn).removeClass('disabled');
+
+                        if(quantity.toString() === "0") $(removeBtn).addClass('disabled');
+                        else $(removeBtn).removeClass('disabled');
+                    }
+                },
+                error: (err) => {
+                    console.log('err', err);
+                },
+                async: true,
+                cache: false,
+                contentType: false,
+                processData: false,
+                timeout: 60000
+            })
+        }
     });
 
     $('#attach-details .add-attach').on('click', function() {
