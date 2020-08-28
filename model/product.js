@@ -81,16 +81,10 @@ Product.init({
     deletedAt: 'deleted_at'
 });
 
-Product.belongsTo(User, {
-    foreignKey: 'user_id'
-});
 User.hasMany(Product, {
     foreignKey: 'user_id'
 });
 Product.hasMany(Stock, {
-    foreignKey: 'product_id'
-});
-Stock.belongsTo(Product, {
     foreignKey: 'product_id'
 });
 Product.sync();

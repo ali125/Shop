@@ -39,22 +39,10 @@ Stock.init({
 
 class Stock_Model extends Model {}
 Stock_Model.init({
-    stock_id: {
-        type: DataTypes.INTEGER,
-        unique: 'tt_unique_constraint'
-    },
-    model_id: {
-        type: DataTypes.INTEGER,
-        unique: 'tt_unique_constraint'
-    },
-    model_type: {
-        type: DataTypes.STRING,
-        unique: 'tt_unique_constraint'
-    },
-    model_slug: {
-        type: DataTypes.STRING,
-        unique: 'tt_unique_constraint'
-    }
+    stock_id: DataTypes.INTEGER,
+    model_id: DataTypes.INTEGER,
+    model_type: DataTypes.STRING,
+    model_slug: DataTypes.STRING
 }, {
     sequelize,
     modelName: 'stock_model',

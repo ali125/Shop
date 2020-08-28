@@ -14,7 +14,6 @@ exports.tagValidation = [
         .isLength({ min: 2 })
 ];
 
-
 exports.userValidation = [
     body('first_name', 'Please fill first name field')
         .isString()
@@ -34,4 +33,20 @@ exports.userValidation = [
     body('role_id', 'Please fill role field correctly')
         .notEmpty()
         .trim()
+];
+
+exports.productValidation = [
+    body('title', 'Please fill title field')
+        .isString()
+        .trim()
+        .isLength({ min: 3 }),
+    body('stock[0].price', 'Please fill at lease one price field')
+        .trim()
+        .isNumeric(),
+    body('stock[0].count', 'Please fill count field')
+        .trim()
+        .isNumeric(),
+    body('stock[0].sizes', 'Please fill at lease one size field')
+        .trim()
+        .isNumeric(),
 ];

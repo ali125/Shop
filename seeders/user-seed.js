@@ -1,12 +1,7 @@
-const bcrypt = require('bcryptjs');
 const User = require('../model/user');
 
 const UserSeed = async (cb) => {
     try{
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync('password', salt);
-        const defaultPassword = hash;
-
         const users = [
             await User.build({
                 username: 'admin',
@@ -14,7 +9,7 @@ const UserSeed = async (cb) => {
                 last_name: 'Mortazavi',
                 email: 'admin@example.com',
                 mobile: '09123456789',
-                password: defaultPassword,
+                password: 'password',
                 role_id: 1
             }),
             await User.build({
@@ -23,7 +18,7 @@ const UserSeed = async (cb) => {
                 last_name: 'Mortazavi',
                 email: 'user@example.com',
                 mobile: '09987654321',
-                password: defaultPassword,
+                password: 'password',
                 role_id: 2
             }),
         ];

@@ -1,23 +1,18 @@
 <%- include('../layout/header'); %>
 <div class="">
     <%- include('../layout/head-page'); %>
-    <form method="post" action="/admin/products/<%= product.id %>/update" data-parsley-validate class="form-horizontal main-form form-label-left">
+    <form method="post" action="/admin/products/<%= editing ? product.id + '/update' : 'add' %>" data-parsley-validate class="form-horizontal main-form form-label-left">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        <% if(product.stocks.length > 0) { %>
-            <% product.stocks.forEach((stock, ind) => { %>
-                <input type="hidden" name="[stock][<%= ind %>][id]" value="<%= stock.id %>" />
-            <% }) %>
+        <% if((editing || hasError) && product.stocks.length > 0) { %>
+            <input type="hidden" name="[stock][0][id]" value="<%= product.stocks[0].id %>" />
         <% } %>
         <div id="media_upload">
-            <% if(product.stocks.length > 0) { %>
-                <% product.stocks.forEach((stock, ind) => { %>
-                    <% if(typeof stock.media !== 'undefined' && stock.media.length > 0) { %>
-                        <% stock.media.forEach(item => { %>
-                            <input type="hidden" name="[stock][<%= ind %>][media][]" value="<%= item.id %>" />
-                        <% }) %>
-                    <% } %>
+            <% if((editing || hasError) && product.stocks.length > 0 && product.stocks[0].media) { %>
+                <% product.stocks[0].media.forEach(item => { %>
+                    <input type="hidden" name="[stock][0][media][]" value="<%= item.id %>" />
                 <% }) %>
             <% } %>
+
         </div>
         <div class="" role="tabpanel" data-example-id="togglable-tabs">
             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
@@ -60,21 +55,23 @@
                                            id="title"
                                            class="form-control"
                                            name="title"
-                                           value="<%= product.title %>"
+                                           value="<%= editing || hasError ? product.title : '' %>"
                                             />
+
+                                    <label for="slug">عنوانک :</label>
+                                    <input type="text"
+                                           id="slug"
+                                           class="form-control"
+                                           name="slug"
+                                           value="<%= editing || hasError ? product.slug : '' %>" />
 
                                     <label for="category_id">دسته بندی</label>
                                     <select class="form-control js-select2-single" id="category_id" name="category_id">
                                         <option value="0">بدون دسته بندی</option>
                                         <% categories.forEach(category =>{ %>
-                                            <option
-                                                    <% if(hasError) { %>
-                                                        <%= product.category_id === category.id.toString() ? 'selected' : '' %>
-                                                    <% }else { %>
-                                                        <% product.categories.forEach(p_category => { %>
-                                                            <%= p_category.id === category.id ? 'selected' : '' %>
-                                                        <% }) %>
-                                                    <% } %>
+                                            <option <% editing || hasError ? product.categories.forEach(p_category => {
+                                                        p_category.id === category.id ? 'selected' : ''
+                                                    }) : '' %>
                                                     value="<%= category.id %>">
                                                 <%= category.name %>
                                             </option>
@@ -84,17 +81,12 @@
                                     <label for="tags">تگ</label>
                                     <select class="form-control js-select2-multiple" name="tags[]" id="tags" multiple="multiple">
                                         <% tags.forEach(tag =>{ %>
-                                            <option <% product.tags.forEach(p_tag => { %><%= p_tag.id === tag.id ? 'selected' : '' %> <% }) %>
-                                                    <% if(hasError) { %>
-                                                        <% product.tags.forEach(tagItem => { %>
-                                                            <%= (tagItem === tag.id.toString()) ? 'selected' : '' %>
-                                                        <% }) %>
-                                                    <% }else { %>
-                                                        <% product.tags.forEach(p_tag => { %>
-                                                            <%= p_tag.id === tag.id ? 'selected' : '' %>
-                                                        <% }) %>
-                                                    <% } %>
-                                                    value="<%= tag.id %>"><%= tag.name %></option>
+                                            <option <% editing || hasError ? product.tags.forEach(p_tag => {
+                                                        p_tag.id === tag.id ? 'selected' : ''
+                                                    }) : '' %>
+                                                    value="<%= tag.id %>">
+                                                <%= tag.name %>
+                                            </option>
                                         <% }) %>
                                     </select>
 
@@ -103,14 +95,14 @@
                                     <label for="summernote">توضیحات</label>
 
                                     <!--                        <textarea name="description" id="formEditor" class="form-editor"></textarea>-->
-                                    <textarea rows="5" id="summernote" name="content"><%= product.content %></textarea>
+                                    <textarea rows="5" id="summernote" name="content"><%= editing || hasError ? product.content : '' %></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <%- include('../layout/file-uploader', {
                                 upload_id: "[stock][0][media][]",
-                                data: product.stocks.length > 0 && product.stocks[0].media ? product.stocks[0].media : null
+                                data: editing || hasError ? product.stocks.length > 0 && product.stocks[0].media ? product.stocks[0].media : null : null
                             }); %>
                             <div class="x_panel">
                                 <div class="x_title">
@@ -138,17 +130,17 @@
                                            id="price[0]"
                                            class="form-control"
                                            name="[stock][0][price]"
-                                            <% if(product.stocks.length > 0) { %>
+                                            <% if((editing || hasError) && product.stocks.length > 0) { %>
                                                 value="<%= product.stocks[0].price %>"
                                             <% } %>
-                                            />
+                                           required />
 
                                     <label for="count[0]">تعداد :</label>
                                     <input type="number"
                                            id="count[0]"
                                            class="form-control"
                                            name="[stock][0][count]"
-                                            <% if(product.stocks.length > 0) { %>
+                                            <% if((editing || hasError) && product.stocks.length > 0) { %>
                                                 value="<%= product.stocks[0].count %>"
                                             <% } else { %>
                                                 value="0"
@@ -162,34 +154,22 @@
                                                 <% item.terms.forEach(t =>{ %>
                                                     <optgroup label="<%= t.title %>">
                                                         <% t.termmeta.forEach(meta =>{ %>
-                                                            <option
-                                                                    <% if(hasError && product.stocks.length > 0) { %>
-                                                                            <%= item.slug === 'sizes' && product.stocks[0].sizes === meta.id.toString() ? 'selected' : '' %>
-                                                                            <%= item.slug === 'colors' && product.stocks[0].colors === meta.id.toString() ? 'selected' : '' %>
-                                                                    <% } else if(product.stocks.length > 0) { %>
-                                                                        <% product.stocks[0].termmeta.forEach(t => { %>
-                                                                            <%= t.id === meta.id ? 'selected' : '' %>
-                                                                        <% }) %>
-                                                                    <% } %>
+                                                            <option <% if((editing || hasError) && product.stocks.length > 0)
+                                                                    product.stocks[0].termmeta.forEach(t => {
+                                                                        t.id === meta.id ? 'selected' : ''
+                                                                    }) %>
                                                                     value="<%= meta.id %>"><%= meta.meta_value %></option>
                                                         <% }) %>
                                                     </optgroup>
                                                 <% }) %>
                                             <% } else { %>
                                                 <% item.termmeta.forEach(meta =>{ %>
-                                                    <option
-                                                            <% if(hasError && product.stocks.length > 0) { %>
-                                                                <%= item.slug === 'colors' && product.stocks[0].colors === meta.id.toString() ? 'selected' : '' %>
-                                                                <%= item.slug === 'sizes' && product.stocks[0].sizes === meta.id.toString() ? 'selected' : '' %>
-                                                            <% } else if(product.stocks.length > 0) { %>
-                                                                <% product.stocks[0].termmeta.forEach(t => { %>
-                                                                    <%= t.id === meta.id ? 'selected' : '' %>
-                                                                <% }) %>
-                                                            <% } %>
+                                                    <option <% if((editing || hasError) && product.stocks.length > 0)
+                                                            product.stocks[0].termmeta.forEach(t => {
+                                                                t.id === meta.id ? 'selected' : ''
+                                                            }) %>
                                                             data-colors="<%= meta.meta_value %>"
-                                                            value="<%= meta.id %>">
-                                                        <%= meta.meta_key %>
-                                                    </option>
+                                                            value="<%= meta.id %>"><%= meta.meta_key %></option>
                                                 <% }) %>
                                             <% } %>
                                         </select>
@@ -228,17 +208,17 @@
                                            id="price[1]"
                                            class="form-control"
                                            name="[stock][1][price]"
-                                            <% if(product.stocks.length > 1) { %>
+                                            <% if((editing || hasError) && product.stocks.length > 1) { %>
                                             value="<%= product.stocks[1].price %>"
                                             <% } %>
-                                            />
+                                           required />
 
                                     <label for="count[1]">تعداد :</label>
                                     <input type="number"
                                            id="count[1]"
                                            class="form-control"
                                            name="[stock][1][count]"
-                                            <% if(product.stocks.length > 1) { %>
+                                            <% if((editing || hasError) && product.stocks.length > 1) { %>
                                                    value="<%= product.stocks[1].count %>"
                                             <% } else { %>
                                                 value="0"
@@ -253,34 +233,22 @@
                                                     <% item.terms.forEach(t =>{ %>
                                                         <optgroup label="<%= t.title %>">
                                                             <% t.termmeta.forEach(meta =>{ %>
-                                                                <option
-                                                                <% if(hasError && product.stocks.length > 1) { %>
-                                                                    <%= item.slug === 'sizes' && product.stocks[1].sizes === meta.id.toString() ? 'selected' : '' %>
-                                                                            <%= item.slug === 'colors' && product.stocks[1].colors === meta.id.toString() ? 'selected' : '' %>
-                                                                <% } else if(product.stocks.length > 1) { %>
-                                                                    <% product.stocks[1].termmeta.forEach(t => { %>
-                                                                        <%= t.id === meta.id ? 'selected' : '' %>
-                                                                            <% }) %>
-                                                                        <% } %>
+                                                                <option <% if((editing || hasError) && product.stocks.length > 1)
+                                                                        product.stocks[1].termmeta.forEach(t => {
+                                                                            t.id === meta.id ? 'selected' : ''
+                                                                        }) %>
                                                                         value="<%= meta.id %>"><%= meta.meta_value %></option>
                                                             <% }) %>
                                                         </optgroup>
                                                     <% }) %>
                                                 <% } else { %>
                                                     <% item.termmeta.forEach(meta =>{ %>
-                                                        <option
-                                                        <% if(hasError && product.stocks.length > 1) { %>
-                                                            <%= item.slug === 'colors' && product.stocks[1].colors === meta.id.toString() ? 'selected' : '' %>
-                                                                    <%= item.slug === 'sizes' && product.stocks[1].sizes === meta.id.toString() ? 'selected' : '' %>
-                                                        <% } else if(product.stocks.length > 1) { %>
-                                                            <% product.stocks[1].termmeta.forEach(t => { %>
-                                                                <%= t.id === meta.id ? 'selected' : '' %>
-                                                                    <% }) %>
-                                                                <% } %>
+                                                        <option <% if((editing || hasError) && product.stocks.length > 1)
+                                                                product.stocks[1].termmeta.forEach(t => {
+                                                                    t.id === meta.id ? 'selected' : ''
+                                                                }) %>
                                                                 data-colors="<%= meta.meta_value %>"
-                                                                value="<%= meta.id %>">
-                                                            <%= meta.meta_key %>
-                                                        </option>
+                                                                value="<%= meta.id %>"><%= meta.meta_key %></option>
                                                     <% }) %>
                                                 <% } %>
                                             </select>
@@ -292,7 +260,7 @@
                         <div class="col-md-6 col-sm-12 ">
                             <%- include('../layout/file-uploader', {
                                 upload_id: "[stock][1][media][]",
-                                data: product.stocks.length > 1 && product.stocks[1].media ? product.stocks[1].media : null
+                                data: editing || hasError ? product.stocks.length > 1 && product.stocks[1].media ? product.stocks[1].media : null : null
                             }); %>
                         </div>
                     </div>

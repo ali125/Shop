@@ -34,6 +34,6 @@ const store = new SessionStore({
     extendDefaultFields: extendDefaultFields,
 });
 
-// Session.sync();
+Session.sync();
 
 module.exports = store;

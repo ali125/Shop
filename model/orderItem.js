@@ -36,7 +36,7 @@ OrderItem.init({
     updatedAt: 'updated_at'
 });
 
-OrderItem.hasOne(Stock, {
+Stock.hasOne(OrderItem, {
     foreignKey: 'stock_id'
 });
 

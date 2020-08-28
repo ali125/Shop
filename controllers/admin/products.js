@@ -1,7 +1,8 @@
 const _ = require("lodash");
+const { Op } = require("sequelize");
+const { validationResult } = require("express-validator/check");
 const Term = require('../../model/term');
 const Termmeta = require('../../model/termmeta');
-const User = require('../../model/user');
 const Tag = require('../../model/tag');
 const Category = require('../../model/category');
 const Product = require('../../model/product');
@@ -97,7 +98,7 @@ const setStock = async (product, body, stocks, edit = false) => {
 
 };
 
-const all = async (req, res, next) => {
+exports.all = async (req, res, next) => {
     try {
         const data = await Product.findAll({
             include: [Category, {
@@ -107,7 +108,7 @@ const all = async (req, res, next) => {
             }],
             // include: { association: 'stocks' }
         });
-        return res.send(data);
+        // return res.send(data);
         renderView(req, res, {
             title: 'لیست محصولات',
             data
@@ -119,7 +120,7 @@ const all = async (req, res, next) => {
         });
     }
 };
-const get = async (req, res, next) => {
+exports.get = async (req, res, next) => {
     try {
         const id = req.params.id;
         const data = await Product.findByPk(id, {
@@ -221,16 +222,14 @@ const get = async (req, res, next) => {
         });
     }
 };
-const add = async (req, res, next) => {
+exports.add = async (req, res, next) => {
     try {
         const details = await getAllTerms();
-        // res.send(details);
-        const users = await User.findAll();
         const tags = await Tag.findAll();
         const categories = await Category.findAll();
         renderView(req, res, {
             title: 'افزودن محصول',
-            users,
+            hasError: false,
             tags,
             details,
             categories
@@ -242,21 +241,64 @@ const add = async (req, res, next) => {
         });
     }
 };
-const save = async (req, res, next) => {
+exports.save = async (req, res, next) => {
     try {
-        // return res.send(req.body);
-        let stock = req.body.stock;
-        let body = req.body;
-        delete body.stock;
-        if(body.category_id && body.category_id.toString() === "0") delete body.category_id;
-        const slug = await getUniqueSlug(Product, body.title, body.slug);
-        const product_created = await Product.create({
-            ...body,
-            slug
-        });
-        await setStock(product_created, body, stock);
-        const categories = (req.body.category_id && req.body.category_id !== 0) ? await product_created.setCategories(req.body.category_id) : [];
-        const tags = (req.body.tags) ? await product_created.setTags(req.body.tags) : [];
+        const title = req.body.title;
+        const slug = await getUniqueSlug(Product, title, req.body.slug);
+        let category_id = req.body.category_id;
+        let tags = req.body.tags;
+        let content = req.body.content;
+        let stocks = req.body.stock;
+        let user_id = req.session.user.id;
+
+        const errors = validationResult(req);
+        if(!errors.isEmpty()) {
+            if(stocks.length > 0) {
+                for(let i = 0 ; i < stocks.length ; i++) {
+                    const stock = stocks[i];
+                    const media = stock.media || [];
+                    if(media.length > 0) {
+                        stock.media = await Media.findAll({
+                            where: {
+                                id: {
+                                    [Op.in]: media
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+            const details = await getAllTerms();
+            const allTags = await Tag.findAll();
+            const categories = await Category.findAll();
+            return renderView(req, res, {
+                title: 'افزودن محصول',
+                hasError: true,
+                errorMessage: errors.array()[0].msg,
+                validationErrors: errors.array(),
+                tags: allTags,
+                details,
+                categories,
+                product: {
+                    title,
+                    slug,
+                    category_id,
+                    tags,
+                    content,
+                    stocks
+                }
+            });
+        }
+        const body = {
+            title,
+            slug,
+            content,
+            user_id,
+        };
+        const product_created = await Product.create(body);
+        await setStock(product_created, body, stocks);
+        if(category_id && category_id !== 0) await product_created.setCategories(category_id);
+        if(tags) await product_created.setTags(tags);
         const product = await Product.findByPk(product_created.id, {
             include: [Tag, Category, {
                 model: Stock,
@@ -268,18 +310,16 @@ const save = async (req, res, next) => {
             redirect: '/admin/products'
         });
     } catch(e) {
-        console.log(e);
         renderViewError(req, res, {
             errors: e
         });
     }
 };
-const edit = async (req, res, next) => {
+exports.edit = async (req, res, next) => {
     try {
         const id = req.params.id;
         const details = await getAllTerms();
         const tags = await Tag.findAll();
-        const users = await User.findAll();
         const categories = await Category.findAll();
         const product = await Product.findByPk(id, {
             include: [Tag, Category, {
@@ -287,10 +327,9 @@ const edit = async (req, res, next) => {
                 include: [Termmeta, Media]
             }]
         });
-        // res.send(product);
         renderView(req, res, {
             title: ' ویرایش محصول: ' + product.title,
-            users,
+            hasError: false,
             product,
             categories,
             details,
@@ -303,25 +342,82 @@ const edit = async (req, res, next) => {
         });
     }
 };
-const update = async (req, res, next) => {
+exports.update = async (req, res, next) => {
     try {
-        // return res.send(req.body);
         const id = req.params.id;
-        const body = req.body;
+        const title = req.body.title;
+        // const slug = await getUniqueSlug(Product, title, req.body.slug);
+        const slug = req.body.slug;
+        let category_id = req.body.category_id;
+        let inTags = req.body.tags;
+        let content = req.body.content;
+        let stocks = req.body.stock;
+
+        const errors = validationResult(req);
+        if(!errors.isEmpty()) {
+            if(stocks.length > 0) {
+                for(let i = 0 ; i < stocks.length ; i++) {
+                    const stock = stocks[i];
+                    const media = stock.media || [];
+                    if(media.length > 0) {
+                        stock.media = await Media.findAll({
+                            where: {
+                                id: {
+                                    [Op.in]: media
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+            const details = await getAllTerms();
+            const allTags = await Tag.findAll();
+            const categories = await Category.findAll();
+            // return res.send({
+            //     product: {
+            //         title,
+            //         slug,
+            //         category_id,
+            //         tags: inTags,
+            //         content,
+            //         stocks
+            //     }
+            // })
+            return renderView(req, res, {
+                title: 'افزودن محصول',
+                hasError: true,
+                errorMessage: errors.array()[0].msg,
+                validationErrors: errors.array(),
+                tags: allTags,
+                details,
+                categories,
+                product: {
+                    id,
+                    title,
+                    slug,
+                    category_id,
+                    tags: inTags,
+                    content,
+                    stocks
+                }
+            });
+        }
+        const body = {
+            title,
+            slug,
+            content
+        };
         const get_product = await Product.findByPk(id, {
             include: [Stock, Tag]
         });
-        const slug = await getUniqueSlug(Product, body.title, body.slug);
-        await Product.update({
-            ...body,
-            slug
-        },{
+
+        await Product.update(body,{
             where: { id }
         });
-        await setStock(get_product, body, body.stock, true);
-        const tags = _.filter(get_product.tags, t => body.tags.indexOf(t.id) === -1);
+        await setStock(get_product, body, stocks, true);
+        const tags = _.filter(get_product.tags, t => inTags.indexOf(t.id) === -1);
         if(tags) await get_product.setTags(tags);
-        if(body.category_id && body.category_id !== 0) await get_product.setCategories(body.category_id);
+        if(category_id && category_id !== 0) await get_product.setCategories(category_id);
         const product = await Product.findByPk(get_product.id, {
             include: [Tag, Category, {
                 model: Stock,
@@ -338,7 +434,7 @@ const update = async (req, res, next) => {
         });
     }
 };
-const destroy = async (req, res, next) => {
+exports.destroy = async (req, res, next) => {
     try {
         const id = req.params.id;
         const product = await Product.findByPk(id, {
@@ -377,14 +473,4 @@ const destroy = async (req, res, next) => {
             errors: e
         });
     }
-};
-
-module.exports = {
-    all,
-    get,
-    add,
-    save,
-    edit,
-    update,
-    destroy
 };

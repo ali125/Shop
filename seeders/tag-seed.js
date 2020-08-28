@@ -4,15 +4,15 @@ const TagSeed = async () => {
     try {
         const tags = [
             await Tag.build({
-                title: 'لوازم الکترونیکی',
+                name: 'لوازم الکترونیکی',
                 slug: 'لوازم-الکترونیکی'
             }),
             await Tag.build({
-                title: 'لوازم خانگی',
+                name: 'لوازم خانگی',
                 slug: 'لوازم-خانگی'
             }),
             await Tag.build({
-                title: 'لوازم جانبی',
+                name: 'لوازم جانبی',
                 slug: 'لوازم-جانبی'
             }),
         ];

@@ -3,7 +3,17 @@
     <%- include('../layout/head-page'); %>
     <form method="post" action="/admin/products/add" data-parsley-validate class="form-horizontal main-form form-label-left">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        <div id="media_upload"></div>
+        <div id="media_upload">
+            <% if(hasError && product.stocks.length > 0) { %>
+                <% product.stocks.forEach((stock, ind) => { %>
+                    <% if(typeof stock.media !== 'undefined' && stock.media.length > 0) { %>
+                        <% stock.media.forEach(item => { %>
+                            <input type="hidden" name="[stock][<%= ind %>][media][]" value="<%= item.id %>" />
+                        <% }) %>
+                    <% } %>
+                <% }) %>
+            <% } %>
+        </div>
         <div class="" role="tabpanel" data-example-id="togglable-tabs">
         <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
             <li role="presentation" class="active">
@@ -41,30 +51,32 @@
 
                                 <div class="media"></div>
                                 <label for="title">عنوان * :</label>
-                                <input type="text" id="title" class="form-control" name="title" required />
+                                <input type="text" id="title" class="form-control" name="title" value="<%= hasError ? product.title : '' %>" />
 
                                 <label for="slug">عنوانک :</label>
                                 <input type="text" id="slug" class="form-control" name="slug"  />
 
                                 <label for="category_id">دسته بندی</label>
+
                                 <select class="form-control js-select2-single" id="category_id" name="category_id">
                                     <option value="0">بدون دسته بندی</option>
                                     <% categories.forEach(category =>{ %>
-                                        <option value="<%= category.id %>"><%= category.name %></option>
+                                        <option <%= hasError ? product.category_id === category.id.toString() ? 'selected' : '' : '' %>
+                                                value="<%= category.id %>">
+                                            <%= category.name %>
+                                        </option>
                                     <% }) %>
                                 </select>
 
                                 <label for="tags">تگ</label>
                                 <select class="form-control js-select2-multiple" name="tags[]" id="tags" multiple="multiple">
                                     <% tags.forEach(tag =>{ %>
-                                        <option value="<%= tag.id %>"><%= tag.name %></option>
-                                    <% }) %>
-                                </select>
-
-                                <label for="users">کاربر</label>
-                                <select class="form-control" id="users" name="user_id" required>
-                                    <% users.forEach(user =>{ %>
-                                        <option value="<%= user.id %>"><%= user.full_name %></option>
+                                        <option <% if(hasError) product.tags.forEach(tagItem => { %>
+                                                     <%= (tagItem === tag.id.toString()) ? 'selected' : '' %>
+                                                <% }) %>
+                                                value="<%= tag.id %>">
+                                            <%= tag.name %>
+                                        </option>
                                     <% }) %>
                                 </select>
 
@@ -73,12 +85,15 @@
                                 <label for="summernote">توضیحات</label>
 
                                 <!--                        <textarea name="description" id="formEditor" class="form-editor"></textarea>-->
-                                <textarea rows="5" id="summernote" name="content"></textarea>
+                                <textarea rows="5" id="summernote" name="content"><%= hasError ? product.content : '' %></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12">
-                        <%- include('../layout/file-uploader', { upload_id: "[stock][0][media][]" }); %>
+                        <%- include('../layout/file-uploader', {
+                            upload_id: "[stock][0][media][]",
+                            data: hasError && product.stocks.length > 0 && product.stocks[0].media ? product.stocks[0].media : null
+                        }); %>
                         <div class="x_panel">
                             <div class="x_title">
                                 <h2>اطلاعات جزئی محصول <small>different form elements</small></h2>
@@ -101,10 +116,18 @@
                             </div>
                             <div class="x_content">
                                 <label for="price[0]">قیمت * :</label>
-                                <input type="text" id="price[0]" class="form-control" name="[stock][0][price]" required />
+                                <input type="text"
+                                       id="price[0]"
+                                       class="form-control"
+                                       name="[stock][0][price]"
+                                       value="<%= hasError && product.stocks[0] ? product.stocks[0].price : '' %>" />
 
                                 <label for="count[0]">تعداد :</label>
-                                <input type="number" id="count[0]" class="form-control" name="[stock][0][count]" value="0" />
+                                <input type="number"
+                                       id="count[0]"
+                                       class="form-control"
+                                       name="[stock][0][count]"
+                                       value="<%= hasError && product.stocks[0] ? product.stocks[0].count : '0' %>" />
 
                                 <% details.forEach(item =>{ %>
                                     <label for="<%= item.slug %>[0]"><%= item.title %>:</label>
@@ -114,7 +137,11 @@
                                             <% item.terms.forEach(t =>{ %>
                                                 <optgroup label="<%= t.title %>">
                                                     <% t.termmeta.forEach(meta =>{ %>
-                                                    <option value="<%= meta.id %>"><%= meta.meta_value %></option>
+                                                    <option <% if(hasError && product.stocks.length > 0) { %>
+                                                                <%= item.slug === 'sizes' && product.stocks[0].sizes === meta.id.toString() ? 'selected' : '' %>
+                                                                <%= item.slug === 'colors' && product.stocks[0].colors === meta.id.toString() ? 'selected' : '' %>
+                                                            <% } %>
+                                                            value="<%= meta.id %>"><%= meta.meta_value %></option>
                                                         <% }) %>
                                                 </optgroup>
                                             <% }) %>
@@ -122,6 +149,10 @@
                                             <% item.termmeta.forEach(meta =>{ %>
                                                 <option <% if(item.type === 'color') { %>
                                                             data-colors="<%= meta.meta_value %>"
+                                                        <% } %>
+                                                        <% if(hasError && product.stocks.length > 0) { %>
+                                                            <%= item.slug === 'colors' && product.stocks[0].colors === meta.id.toString() ? 'selected' : '' %>
+                                                            <%= item.slug === 'sizes' && product.stocks[0].sizes === meta.id.toString() ? 'selected' : '' %>
                                                         <% } %>
                                                         value="<%= meta.id %>">
                                                     <%= meta.meta_key %>

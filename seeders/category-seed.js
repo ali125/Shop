@@ -4,15 +4,15 @@ const CategorySeed = async () => {
     try {
         const categories = [
             await Category.build({
-                title: 'لوازم الکترونیکی',
+                name: 'لوازم الکترونیکی',
                 slug: 'لوازم-الکترونیکی'
             }),
             await Category.build({
-                title: 'لوازم خانگی',
+                name: 'لوازم خانگی',
                 slug: 'لوازم-خانگی'
             }),
             await Category.build({
-                title: 'لوازم جانبی',
+                name: 'لوازم جانبی',
                 slug: 'لوازم-جانبی'
             }),
         ];
