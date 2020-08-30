@@ -100,7 +100,6 @@ $(document).ready(function() {
         const files = inputFile.files;
         const loading = [];
         for(let i = 0 ; i < files.length ; i++) {
-            console.log(e.target.value);
             if (files && files[i]) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
@@ -172,7 +171,7 @@ $(document).ready(function() {
         const quantityLabel = $this.parent().find('.cart-quantity-label');
         const priceTd = $this.parentsUntil('tr').parent().find('.td-price');
         const currentQuantity = $(quantityLabel).text();
-        const currentprice = $(priceTd).text();
+        const currentprice = $(priceTd).text() / currentQuantity;
         // const quantityTd = $this.parentsUntil('tr').parent().find('.td-quantity');
 
         const url = $this.attr('href');
@@ -190,7 +189,7 @@ $(document).ready(function() {
                 type: 'POST',
                 url,
                 success: (res) => {
-                    let totalProductsPrice = Number($('#total-products-price').text()) - currentprice * currentQuantity;
+                    let totalProductsPrice = Number($('#total-products-price').text()) - (currentprice * currentQuantity);
                     if(!res.data) {
                         $this.parentsUntil('tr').parent().remove();
                     } else {
@@ -199,7 +198,6 @@ $(document).ready(function() {
                         const productPrice = Number(quantity) * Number(price);
                         $(quantityLabel).text(quantity);
                         $(priceTd).text(productPrice);
-                        console.log(maxCount, quantity.toString(), maxCount === quantity.toString());
 
                         if(maxCount === quantity.toString()) $(addBtn).addClass('disabled');
                         else $(addBtn).removeClass('disabled');
@@ -207,7 +205,7 @@ $(document).ready(function() {
                         if(quantity.toString() === "0") $(removeBtn).addClass('disabled');
                         else $(removeBtn).removeClass('disabled');
 
-                        totalProductsPrice += quantity * productPrice;
+                        totalProductsPrice += productPrice;
                     }
 
                     if($this.hasClass('cart-add'))
