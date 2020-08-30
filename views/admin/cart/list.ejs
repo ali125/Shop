@@ -13,7 +13,11 @@
     </tr>
     </thead>
     <tbody>
+        <% let totalCount = 0; %>
+        <% let totalPrice = 0; %>
         <% data.stocks.forEach(item =>{ %>
+        <% totalCount += item.cartItem.quantity; %>
+        <% totalPrice += item.cartItem.quantity * item.price; %>
         <tr>
             <td><%= item.id %></td>
             <td>
@@ -33,7 +37,43 @@
         </tr>
         <% }); %>
     </tbody>
+    <tfoot>
+        <tr>
+            <th>مالیات</th>
+            <td id="total-all-tax"><%= (totalPrice/100)*0.9 %></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th>تعداد کل محصولات</th>
+            <td id="total-all-count"><%= totalCount %></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th>مجموع قیمت محصولات</th>
+            <td id="total-products-price"><%= totalPrice %></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th>مجموع کل</th>
+            <td id="total-all-price"><%= totalPrice + ((totalPrice/100)*0.9) %></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
 </table>
+
+
 
 <a href="/orders/information" class="btn btn-success" >ثبت سفارش</a>
 

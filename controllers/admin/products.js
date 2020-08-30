@@ -75,6 +75,7 @@ const setStock = async (product, body, stocks, edit = false, res) => {
                             if(val) await stock_created.setTermmeta(val, { through: { model_slug: key } } );
                         } catch(e) {
                             console.log('setTermmeta Errors: ', e);
+                            return res.send(e);
                         }
 
                     });
@@ -127,8 +128,8 @@ exports.get = async (req, res, next) => {
                 include: [Termmeta, Media]
             }]
         });
-        // return res.send(data);
         let sub_stock = {};
+        // return res.send(data);
         _.map(data.stocks, stock => {
             _.map(stock.termmeta, meta => {
                 if(meta.stock_model.model_slug === 'colors') {
@@ -206,7 +207,7 @@ exports.get = async (req, res, next) => {
             });
         });
         const details = _.map(sub_stock, s => s);
-        // return res.send(data);
+        // return res.send(details);
         renderView(req, res, {
             title: data.title,
             ...data,
@@ -244,7 +245,7 @@ exports.save = async (req, res, next) => {
         const title = req.body.title;
         const slug = await getUniqueSlug(Product, title, req.body.slug);
         let category_id = req.body.category_id;
-        let tags = req.body.tags;
+        let tags = req.body.tags || [];
         let content = req.body.content;
         let stocks = req.body.stock;
         let user_id = req.session.user.id;
@@ -345,8 +346,7 @@ exports.update = async (req, res, next) => {
     try {
         const id = req.params.id;
         const title = req.body.title;
-        // const slug = await getUniqueSlug(Product, title, req.body.slug);
-        const slug = req.body.slug;
+        const slug = await getUniqueSlug(Product, title, req.body.slug, id);
         let category_id = req.body.category_id;
         let inTags = req.body.tags;
         let content = req.body.content;
@@ -413,6 +413,7 @@ exports.update = async (req, res, next) => {
         await Product.update(body,{
             where: { id }
         });
+        // return res.send({ stocks });
         await setStock(get_product, req.body, stocks, true);
         const tags = _.filter(get_product.tags, t => inTags.indexOf(t.id) === -1);
         if(tags) await get_product.setTags(tags);

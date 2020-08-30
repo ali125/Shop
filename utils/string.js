@@ -16,11 +16,14 @@ const slugify = (text) => {
         .replace(/-+$/, '');            // Trim - from end of text
 };
 
-const getUniqueSlug = async (Model, title = null, slug_val = null) => {
+const getUniqueSlug = async (Model, title = null, slug_val = null, id = null) => {
     if(title || slug_val) {
         const slug = slug_val ? slugify(slug_val) : slugify(title);
         const slug_result = await Model.findAll({
             where: {
+                id: {
+                    [Op.not]: id,
+                },
                 slug: {
                     [Op.like]: `%${slug}%`
                 }

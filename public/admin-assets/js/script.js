@@ -170,9 +170,11 @@ $(document).ready(function() {
         const removeBtn = $this.parent().find('.cart-remove');
 
         const quantityLabel = $this.parent().find('.cart-quantity-label');
-        const currentQuantity = $(quantityLabel).text();
-        const quantityTd = $this.parentsUntil('tr').parent().find('.td-quantity');
         const priceTd = $this.parentsUntil('tr').parent().find('.td-price');
+        const currentQuantity = $(quantityLabel).text();
+        const currentprice = $(priceTd).text();
+        // const quantityTd = $this.parentsUntil('tr').parent().find('.td-quantity');
+
         const url = $this.attr('href');
         const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
@@ -188,6 +190,7 @@ $(document).ready(function() {
                 type: 'POST',
                 url,
                 success: (res) => {
+                    let totalProductsPrice = Number($('#total-products-price').text()) - currentprice * currentQuantity;
                     if(!res.data) {
                         $this.parentsUntil('tr').parent().remove();
                     } else {
@@ -195,7 +198,6 @@ $(document).ready(function() {
                         const price = res.data.stocks[0].price;
                         const productPrice = Number(quantity) * Number(price);
                         $(quantityLabel).text(quantity);
-                        $(quantityTd).text(quantity);
                         $(priceTd).text(productPrice);
                         console.log(maxCount, quantity.toString(), maxCount === quantity.toString());
 
@@ -204,7 +206,18 @@ $(document).ready(function() {
 
                         if(quantity.toString() === "0") $(removeBtn).addClass('disabled');
                         else $(removeBtn).removeClass('disabled');
+
+                        totalProductsPrice += quantity * productPrice;
                     }
+
+                    if($this.hasClass('cart-add'))
+                        $('#total-all-count').text(Number($('#total-all-count').text()) + 1);
+                    if($this.hasClass('cart-remove'))
+                        $('#total-all-count').text(Number($('#total-all-count').text()) - 1);
+
+                    $('#total-products-price').text(totalProductsPrice);
+                    $('#total-all-tax').text((totalProductsPrice/100) * 0.9);
+                    $('#total-all-price').text(totalProductsPrice + (totalProductsPrice/100) * 0.9);
                 },
                 error: (err) => {
                     console.log('err', err);
