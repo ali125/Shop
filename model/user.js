@@ -96,6 +96,10 @@ User.init({
     },
     avatar_url: {
         type: DataTypes.STRING,
+        get() {
+            const avatar_url = this.getDataValue('avatar_url');
+            return avatar_url ? avatar_url.substr(6) : null;
+        }
     },
     gender: {
         type: DataTypes.SMALLINT,

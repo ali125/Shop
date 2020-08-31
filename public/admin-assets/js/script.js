@@ -89,6 +89,7 @@ $(document).ready(function() {
             timeout: 60000
         })
     }
+
     $('body').on('change', '.file-uploader input[type="file"]', (e) => {
         const inputFile = e.target;
         const name = $(inputFile).parent().parent().data('id');

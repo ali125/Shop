@@ -144,3 +144,8 @@ table img {
 .stock-meta li {
     cursor: pointer;
 }
+.img-circle.profile_img {
+    width: 4rem;
+    height: 4rem;
+    object-fit: cover;
+}

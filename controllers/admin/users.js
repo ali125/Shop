@@ -3,7 +3,7 @@ const User = require('../../model/user');
 const Role = require('../../model/role');
 const { renderView, renderViewError } = require('../../middleware/router');
 
-const all = async (req, res, next) => {
+exports.all = async (req, res, next) => {
     try {
         const result = await User.findAll();
         renderView(req, res, {
@@ -16,7 +16,7 @@ const all = async (req, res, next) => {
         });
     }
 };
-const add = async (req, res, next) => {
+exports.add = async (req, res, next) => {
     try {
         const roles = await Role.findAll();
         renderView(req, res, {
@@ -32,7 +32,7 @@ const add = async (req, res, next) => {
         });
     }
 };
-const save = async (req, res, next) => {
+exports.save = async (req, res, next) => {
     try {
         const first_name = req.body.first_name;
         const last_name = req.body.last_name;
@@ -69,7 +69,7 @@ const save = async (req, res, next) => {
         });
     }
 };
-const edit = async (req, res, next) => {
+exports.edit = async (req, res, next) => {
     try {
         const id = req.params.id;
         const roles = await Role.findAll();
@@ -88,7 +88,7 @@ const edit = async (req, res, next) => {
         });
     }
 };
-const update = async (req, res, next) => {
+exports.update = async (req, res, next) => {
     try {
         const id = req.params.id;
         const first_name = req.body.first_name;
@@ -128,7 +128,7 @@ const update = async (req, res, next) => {
         });
     }
 };
-const destroy = async (req, res, next) => {
+exports.destroy = async (req, res, next) => {
     try {
         const id = req.params.id;
         const user = await User.destroy({
@@ -146,12 +146,67 @@ const destroy = async (req, res, next) => {
     }
 };
 
+exports.profile = async (req, res, next) => {
+    try {
+        const getUser = req.session.user;
+        const user = await User.findOne({
+            where: {id: getUser.id},
+            include: [Role],
+        });
+        renderView(req, res, {
+            title: 'حساب کاربری',
+            user
+        });
+    } catch(e) {
+        renderViewError(req, res, {
+            title: 'تنظیمات مشخصات محصول',
+            errors: e
+        });
+    }
+};
 
-module.exports = {
-    all,
-    add,
-    save,
-    edit,
-    update,
-    destroy,
+
+exports.updateProfile = async (req, res, next) => {
+    try {
+        const getUser = req.session.user;
+        // const errors = validationResult(req);
+        // if(!errors.isEmpty()) {
+        //     return renderView(req, res, {
+        //         user: req.body,
+        //         editing: true,
+        //         hasError: true,
+        //         errorMessage: errors.array()[0].msg,
+        //         validationErrors: errors.array()
+        //     });
+        // }
+        const first_name = req.body.first_name;
+        const last_name = req.body.last_name;
+        const mobile = req.body.mobile;
+        const email = req.body.email;
+        const body = {
+            first_name,
+            last_name,
+            email,
+            mobile
+        };
+        if(req.file) body['avatar_url'] = req.file.path;
+
+        await User.update(body, {
+            where: {id: getUser.id}
+        });
+        const user = await User.findOne({
+            where: {id: getUser.id},
+            include: [Role],
+        });
+        req.session.user = user;
+        renderView(req, res, {
+            title: 'ویرایش حساب کاربری',
+            user
+        });
+    } catch(e) {
+        renderViewError(req, res, {
+            title: 'تنظیمات مشخصات محصول',
+            errors: e
+        });
+    }
 };

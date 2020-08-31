@@ -34,6 +34,23 @@ exports.userValidation = [
         .notEmpty()
         .trim()
 ];
+exports.profileValidation = [
+    body('first_name', 'Please fill first name field')
+        .isString()
+        .trim()
+        .isLength({ min: 2 }),
+    body('last_name', 'Please fill last name field')
+        .isString()
+        .trim()
+        .isLength({ min: 2 }),
+    body('email', 'Please fill email field correctly')
+        .isEmail()
+        .trim(),
+    body('mobile', 'Please fill mobile field correctly')
+        .isMobilePhone('fa-IR')
+        .trim()
+        .isLength({ min: 2 })
+];
 
 exports.productValidation = [
     body('title', 'Please fill title field')

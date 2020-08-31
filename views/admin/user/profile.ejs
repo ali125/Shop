@@ -1,24 +1,6 @@
 <%- include('../layout/header') %>
 <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h3>User Profile</h3>
-            </div>
-
-            <div class="title_right">
-                <div class="col-md-5 col-sm-5  form-group pull-right top_search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                      <button class="btn btn-secondary" type="button">Go!</button>
-                    </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="clearfix"></div>
-
+    <%- include('../layout/head-page') %>
         <div class="row">
             <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
@@ -40,65 +22,7 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <div class="col-md-3 col-sm-3  profile_left">
-                            <div class="profile_img">
-                                <div id="crop-avatar">
-                                    <!-- Current avatar -->
-                                    <img class="img-responsive avatar-view" src="images/picture.jpg" alt="Avatar" title="Change the avatar">
-                                </div>
-                            </div>
-                            <h3>Samuel Doe</h3>
-
-                            <ul class="list-unstyled user_data">
-                                <li><i class="fa fa-map-marker user-profile-icon"></i> San Francisco, California, USA
-                                </li>
-
-                                <li>
-                                    <i class="fa fa-briefcase user-profile-icon"></i> Software Engineer
-                                </li>
-
-                                <li class="m-top-xs">
-                                    <i class="fa fa-external-link user-profile-icon"></i>
-                                    <a href="http://www.kimlabs.com/profile/" target="_blank">www.kimlabs.com</a>
-                                </li>
-                            </ul>
-
-                            <a class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Profile</a>
-                            <br />
-
-                            <!-- start skills -->
-                            <h4>Skills</h4>
-                            <ul class="list-unstyled user_data">
-                                <li>
-                                    <p>Web Applications</p>
-                                    <div class="progress progress_sm">
-                                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <p>Website Design</p>
-                                    <div class="progress progress_sm">
-                                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="70"></div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <p>Automation & Testing</p>
-                                    <div class="progress progress_sm">
-                                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="30"></div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <p>UI / UX</p>
-                                    <div class="progress progress_sm">
-                                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <!-- end of skills -->
-
-                        </div>
                         <div class="col-md-9 col-sm-9 ">
-
                             <div class="profile_title">
                                 <div class="col-md-6">
                                     <h2>User Activity Report</h2>
@@ -116,20 +40,28 @@
 
                             <div class="" role="tabpanel" data-example-id="togglable-tabs">
                                 <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Recent Activity</a>
+                                    <li role="presentation" class="active">
+                                        <a href="#addressTab" id="address-tab" role="tab" data-toggle="tab" aria-expanded="true">آدرس ها</a>
                                     </li>
-                                    <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Projects Worked on</a>
+                                    <li role="presentation">
+                                        <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="false">Recent Activity</a>
                                     </li>
-                                    <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Profile</a>
+                                    <li role="presentation" class="">
+                                        <a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Projects Worked on</a>
+                                    </li>
+                                    <li role="presentation" class="">
+                                        <a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Profile</a>
                                     </li>
                                 </ul>
                                 <div id="myTabContent" class="tab-content">
-                                    <div role="tabpanel" class="tab-pane active " id="tab_content1" aria-labelledby="home-tab">
-
+                                    <div role="tabpanel" class="tab-pane active" id="addressTab" aria-labelledby="address-tab">
+                                        <h4>آدرس ها</h4>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content1" aria-labelledby="home-tab">
                                         <!-- start recent activity -->
                                         <ul class="messages">
                                             <li>
-                                                <img src="images/img.jpg" class="avatar" alt="Avatar">
+                                                <img src="/admin-assets/images/img.jpg" class="avatar" alt="Avatar">
                                                 <div class="message_date">
                                                     <h3 class="date text-info">24</h3>
                                                     <p class="month">May</p>
@@ -145,7 +77,7 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <img src="images/img.jpg" class="avatar" alt="Avatar">
+                                                <img src="/admin-assets/images/img.jpg" class="avatar" alt="Avatar">
                                                 <div class="message_date">
                                                     <h3 class="date text-error">21</h3>
                                                     <p class="month">May</p>
@@ -161,7 +93,7 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <img src="images/img.jpg" class="avatar" alt="Avatar">
+                                                <img src="/admin-assets/images/img.jpg" class="avatar" alt="Avatar">
                                                 <div class="message_date">
                                                     <h3 class="date text-info">24</h3>
                                                     <p class="month">May</p>
@@ -177,7 +109,7 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <img src="images/img.jpg" class="avatar" alt="Avatar">
+                                                <img src="/admin-assets/images/img.jpg" class="avatar" alt="Avatar">
                                                 <div class="message_date">
                                                     <h3 class="date text-error">21</h3>
                                                     <p class="month">May</p>
@@ -266,6 +198,38 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3 profile_left">
+                            <div class="profile_img">
+                                <div id="crop-avatar">
+                                    <!-- Current avatar -->
+                                    <img class="img-responsive avatar-view w-100" src="<%= user.avatar_url %>" alt="Avatar" title="Change the avatar">
+                                </div>
+                            </div>
+                            <h3 class="h4"><%= user.full_name %></h3>
+
+                            <ul class="list-unstyled user_data">
+                                <li><i class="fa fa-map-marker user-profile-icon"></i> San Francisco, California, USA
+                                </li>
+
+                                <li>
+                                    <i class="fa fa-briefcase user-profile-icon"></i>
+                                    <%= user.role.title %>
+                                </li>
+
+                                <li>
+                                    <i class="fa fa-envelope user-profile-icon"></i>
+                                    <a href="mailto:<%= user.email %>" target="_blank"><%= user.email %></a>
+                                </li>
+
+                                <li class="m-top-xs">
+                                    <i class="fa fa-phone user-profile-icon"></i>
+                                    <a href="tel:<%= user.mobile %>" target="_blank"><%= user.mobile %></a>
+                                </li>
+                            </ul>
+
+                            <a href="/admin/users/profile/edit" class="btn btn-success">ویرایش اطلاعات <i class="fa fa-edit m-right-xs"></i></a>
+                            <br />
                         </div>
                     </div>
                 </div>
