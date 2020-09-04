@@ -1,0 +1,42 @@
+<%- include('../layout/table-head'); %>
+
+<% if(data.length > 0) { %>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">عنوان آدرس</th>
+        <th scope="col">استان</th>
+        <th scope="col">شهر</th>
+        <th scope="col">آدرس</th>
+        <th scope="col">تلفن ثابت</th>
+        <th scope="col">موبایل</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+        <% data.forEach(item =>{ %>
+        <tr>
+            <th scope="row"><%= item.id %></th>
+            <td><%= item.title %></td>
+            <td><%= item.state.name %></td>
+            <td><%= item.city.name %></td>
+            <td><%= item.short_address %></td>
+            <td><%= item.phone %></td>
+            <td><%= item.mobile %></td>
+            <td>
+                <a href="/admin/addresses/<%= item.id %>/edit" class="btn btn-sm btn-warning">ویرایش</a>
+                <a href="/admin/addresses/<%= item.id %>/delete" class="btn btn-sm btn-danger">حذف</a>
+            </td>
+        </tr>
+        <% }); %>
+    </tbody>
+</table>
+
+<% } else { %>
+    <h1>آدرسی یافت نشد.</h1>
+<% } %>
+
+<%- include('../layout/table-foot'); %>
+
+

@@ -51,6 +51,24 @@ exports.profileValidation = [
         .trim()
         .isLength({ min: 2 })
 ];
+exports.addressValidation = [
+    body('title', 'Please fill title field')
+        .isString()
+        .trim()
+        .isLength({ min: 3 }),
+    body('state_id', 'Please fill state field'),
+    body('city_id', 'Please fill city field'),
+    body('address', 'Please fill address field')
+        .isString()
+        .trim(),
+    body('mobile', 'Please fill mobile field correctly')
+        .isMobilePhone('fa-IR')
+        .trim()
+        .isLength({ min: 2 }),
+    body('phone', 'Please fill phone field')
+        .trim()
+        .isLength({ min: 2 })
+];
 
 exports.productValidation = [
     body('title', 'Please fill title field')

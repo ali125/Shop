@@ -1,4 +1,6 @@
 const { validationResult } = require('express-validator/check');
+const Address = require('../../model/address');
+const Location = require('../../model/location');
 const User = require('../../model/user');
 const Role = require('../../model/role');
 const { renderView, renderViewError } = require('../../middleware/router');
@@ -153,9 +155,24 @@ exports.profile = async (req, res, next) => {
             where: {id: getUser.id},
             include: [Role],
         });
+        const addresses = await Address.findAll({
+            where: { user_id: getUser.id },
+            include: [
+                {
+                    model: Location,
+                    as: 'state'
+                },
+                {
+                    model: Location,
+                    as: 'city'
+                }
+            ]
+        });
+        // return res.send(addresses);
         renderView(req, res, {
             title: 'حساب کاربری',
-            user
+            user,
+            addresses
         });
     } catch(e) {
         renderViewError(req, res, {
@@ -164,7 +181,6 @@ exports.profile = async (req, res, next) => {
         });
     }
 };
-
 
 exports.updateProfile = async (req, res, next) => {
     try {

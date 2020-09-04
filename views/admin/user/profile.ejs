@@ -55,7 +55,25 @@
                                 </ul>
                                 <div id="myTabContent" class="tab-content">
                                     <div role="tabpanel" class="tab-pane active" id="addressTab" aria-labelledby="address-tab">
-                                        <h4>آدرس ها</h4>
+                                        <h4><i class="fa fa-map-marker user-profile-icon"></i> آدرس ها</h4>
+                                        <% if(addresses.length > 0) { %>
+                                            <a href="/admin/addresses/add" class="btn btn-sm btn-success"> افزودن آدرس </a>
+                                            <ul>
+                                                <% addresses.forEach(address => { %>
+                                                    <li>
+                                                        <span>
+                                                            <%= address.state.name %> -
+                                                            <%= address.city.name %> -
+                                                            <%= address.address %>
+                                                        </span>
+                                                        <span><%= address.phone %></span>
+                                                    </li>
+                                                <% }) %>
+                                            </ul>
+                                        <% } else { %>
+                                            <p>آدرسی یافت نشد.</p>
+                                            <a href="/admin/addresses/add" class="btn btn-sm btn-success"> افزودن آدرس </a>
+                                        <% } %>
                                     </div>
                                     <div role="tabpanel" class="tab-pane fade" id="tab_content1" aria-labelledby="home-tab">
                                         <!-- start recent activity -->
@@ -209,8 +227,13 @@
                             <h3 class="h4"><%= user.full_name %></h3>
 
                             <ul class="list-unstyled user_data">
-                                <li><i class="fa fa-map-marker user-profile-icon"></i> San Francisco, California, USA
+                                <% if(addresses.length > 0) { %>
+                                <li>
+                                    <i class="fa fa-map-marker user-profile-icon"></i>
+                                    <%= addresses[0].city.name %> -
+                                    <%= addresses[0].short_address %>
                                 </li>
+                                <% } %>
 
                                 <li>
                                     <i class="fa fa-briefcase user-profile-icon"></i>

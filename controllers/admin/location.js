@@ -18,7 +18,7 @@ exports.getCountries = async (req, res, next) => {
 };
 exports.getStates = async (req, res, next) => {
     try {
-        const withCities = req.query.withCity.toString() === "1";
+        const withCities = req.query.withCity && req.query.withCity.toString() === "1";
         const data = await Location.findAll({
             where: { country_id: 1 },
             include: withCities ? [{
@@ -31,6 +31,7 @@ exports.getStates = async (req, res, next) => {
             data
         });
     } catch(e) {
+        console.log(e);
         renderViewError(req, res, {
             errors: e
         });

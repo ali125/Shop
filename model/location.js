@@ -21,6 +21,7 @@ Location.init({
     sequelize,
     modelName: 'location',
     paranoid: true,
+    deletedAt: 'deleted_at',
     timestamps: false
 });
 

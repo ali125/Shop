@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    const CSRT_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
     $('.js-select2-multiple').select2();
     $('.js-select2-single').select2();
 
@@ -61,14 +63,12 @@ $(document).ready(function() {
             error
         }
     ) {
-        const csrfToken = $('meta[name="csrf-token"]').attr('content')
-
         const formData = new FormData();
         formData.append(name, file, file.name);
         $.ajax({
             credentials: 'same-origin', // <-- includes cookies in the request
             headers: {
-                'CSRF-Token': csrfToken // <-- is the csrf token as a header
+                'CSRF-Token': CSRT_TOKEN // <-- is the csrf token as a header
             },
             type: method,
             url,
@@ -176,7 +176,6 @@ $(document).ready(function() {
         // const quantityTd = $this.parentsUntil('tr').parent().find('.td-quantity');
 
         const url = $this.attr('href');
-        const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
         if($this.hasClass('cart-add') && maxCount === currentQuantity) exec = false;
         if($this.hasClass('cart-remove') && currentQuantity === "0") exec = false;
@@ -185,7 +184,7 @@ $(document).ready(function() {
             $.ajax({
                 credentials: 'same-origin', // <-- includes cookies in the request
                 headers: {
-                    'CSRF-Token': csrfToken // <-- is the csrf token as a header
+                    'CSRF-Token': CSRT_TOKEN // <-- is the csrf token as a header
                 },
                 type: 'POST',
                 url,
@@ -268,5 +267,57 @@ $(document).ready(function() {
             templateResult: formatColor
         });
     });
+
+    function getCities($this, state_id) {
+        $.ajax({
+            credentials: 'same-origin', // <-- includes cookies in the request
+            headers: {
+                'CSRF-Token': CSRT_TOKEN // <-- is the csrf token as a header
+            },
+            type: 'GET',
+            url: '/api/locations/cities?state_id=' + state_id,
+            success: (res) => {
+                let cities_el = $this.parent().find('.cities-js');
+                let html = '<option class="d-none">انتخاب شهر</option>';
+                let val = null;
+                if(cities_el.data('value') !== 'false') val = Number(cities_el.data('value'));
+                for(let i = 0 ; i < res.data.length ; i++) {
+                    const item = res.data[i];
+                    html += `<option ${val === item.id ? 'selected' : ''} value="${item.id}">${item.name}</option>`;
+                }
+                cities_el.html(html);
+            }
+        });
+    }
+
+    $.ajax({
+        credentials: 'same-origin', // <-- includes cookies in the request
+        headers: {
+            'CSRF-Token': CSRT_TOKEN // <-- is the csrf token as a header
+        },
+        type: 'GET',
+        url: '/api/locations/states',
+        success: (res) => {
+            $('.states-js').each(function(e) {
+                let html = '';
+                let val = null;
+                if($(this).data('value') !== 'false') val = Number($(this).data('value'));
+                for(let i = 0 ; i < res.data.length ; i++) {
+                    const item = res.data[i];
+                    html += `<option ${val === item.id ? 'selected' : ''} value="${item.id}">${item.name}</option>`;
+                }
+                if(val) getCities($(this), val);
+                $(this).append(html);
+            });
+        }
+    });
+
+
+    $('.states-js').on('change', function() {
+        const $this = $(this);
+        const state_id = $this.val();
+        getCities($this, state_id);
+    });
+
 });
 

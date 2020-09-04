@@ -1,0 +1,56 @@
+<%- include('../layout/form-head', { form_title: title }); %>
+
+<form method="POST" action="/admin/addresses/<%= editing ? data.id +'/update' : 'add' %>" data-parsley-validate class="form-horizontal main-form form-label-left">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <label for="title">عنوان آدرس</label>
+    <input type="text"
+           class="form-control"
+           name="title"
+           id="title"
+           value="<%= editing || hasError ? data.title : '' %>"
+           required
+           placeholder="شرکت، خانه ..." />
+
+    <label for="state_id">استان</label>
+    <select id="state_id"
+            name="state_id"
+            class="form-control states-js"
+            data-value="<%= editing || hasError ? data.state_id : 'false' %>"
+            required>
+        <option class="d-none">انتخاب استان</option>
+    </select>
+
+    <label for="city_id">شهر</label>
+    <select id="city_id"
+            name="city_id"
+            class="form-control cities-js"
+            data-value="<%= editing || hasError ? data.city_id : 'false' %>"
+            required>
+        <option class="d-none">انتخاب شهر</option>
+    </select>
+
+    <label for="address">آدرس</label>
+    <textarea id="address" name="address" class="form-control" required ><%= editing || hasError ? data.address : '' %></textarea>
+
+    <label for="phone">شماره تلفن</label>
+    <input type="tel"
+           class="form-control"
+           name="phone"
+           id="phone"
+           value="<%= editing || hasError ? data.phone : '' %>"
+           required
+           placeholder="شماره تلفن ثابت" />
+
+    <label for="mobile">شماره موبایل</label>
+    <input type="tel"
+           class="form-control"
+           name="mobile"
+           id="mobile"
+           value="<%= editing || hasError ? data.mobile : user.mobile %>"
+           required
+           placeholder="شماره موبایل" />
+    <%- include('../layout/form-buttons'); %>
+</form>
+
+<%- include('../layout/form-foot'); %>
+

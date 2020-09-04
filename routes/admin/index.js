@@ -5,6 +5,7 @@ const viewRouter = express.Router();
 const apiRouter = express.Router();
 const adminAuthController = require('../../controllers/admin/auth');
 const adminUsersRouter = require('./users');
+const adminAddressesRouter = require('./addresses');
 const adminProductsRouter = require('./products');
 const adminTagsRouter = require('./tags');
 const adminCategoriesRouter = require('./categories');
@@ -23,6 +24,7 @@ viewRouter.get('/', auth, (req, res, next) => {
 });
 
 viewRouter.use('/users', auth, adminUsersRouter.viewRouter);
+viewRouter.use('/addresses', auth, adminAddressesRouter.viewRouter);
 viewRouter.use('/products', auth, adminProductsRouter.viewRouter);
 viewRouter.use('/tags', auth, adminTagsRouter.viewRouter);
 viewRouter.use('/categories', auth, adminCategoriesRouter.viewRouter);

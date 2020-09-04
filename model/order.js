@@ -42,12 +42,12 @@ Order.hasMany(OrderItem, {
 });
 OrderItem.belongsTo(Order);
 
-Order.hasOne(Location, {
-    foreignKey: 'state_id'
-});
-Order.hasOne(Location, {
-    foreignKey: 'city_id'
-});
+// Order.hasOne(Location, {
+//     foreignKey: 'state_id'
+// });
+// Order.hasOne(Location, {
+//     foreignKey: 'city_id'
+// });
 Order.hasOne(User, {
     foreignKey: 'user_id'
 });
