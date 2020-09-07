@@ -22,7 +22,7 @@
                     <input type="checkbox"
                            id="<%= permission.slug %>"
                            name="permissions"
-                            <%= role.permissions.indexOf(permission.id) > -1 ? 'checked' : '' %>
+                            <%= (editing || hasError) && role.permissions.indexOf(permission.id) > -1 ? 'checked' : '' %>
                            value="<%= permission.id %>" />
                     <%= permission.title %>
                 </label>

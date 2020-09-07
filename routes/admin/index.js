@@ -4,6 +4,7 @@ const auth = require('../../middleware/auth');
 const viewRouter = express.Router();
 const apiRouter = express.Router();
 const adminAuthController = require('../../controllers/admin/auth');
+const adminPermissionsRouter = require('./permissions');
 const adminRolesRouter = require('./roles');
 const adminUsersRouter = require('./users');
 const adminAddressesRouter = require('./addresses');
@@ -24,6 +25,7 @@ viewRouter.get('/', auth, (req, res, next) => {
   res.render('admin/index', { title: 'Dashboard' });
 });
 
+viewRouter.use('/permissions', auth, adminPermissionsRouter.viewRouter);
 viewRouter.use('/roles', auth, adminRolesRouter.viewRouter);
 viewRouter.use('/users', auth, adminUsersRouter.viewRouter);
 viewRouter.use('/addresses', auth, adminAddressesRouter.viewRouter);

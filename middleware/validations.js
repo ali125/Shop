@@ -14,6 +14,21 @@ exports.tagValidation = [
         .isLength({ min: 2 })
 ];
 
+exports.permissionValidation = [
+    body('title', 'Please fill the title field')
+        .isString()
+        .trim()
+        .isLength({ min: 2 }),
+    body('section_title', 'Please fill the section title field')
+        .isString()
+        .trim()
+        .isLength({ min: 2 }),
+    body('route_url', 'Please fill the route url field')
+        .isString()
+        .trim()
+        .isLength({ min: 2 }),
+];
+
 exports.roleValidation = [
     body('title', 'Please fill the title field')
         .isString()

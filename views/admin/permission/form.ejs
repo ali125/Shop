@@ -1,0 +1,48 @@
+<%- include('../layout/form-head'); %>
+<form method="post" action="/admin/permissions/<%= editing ? permission.id + '/update' : 'add' %>" data-parsley-validate class="form-horizontal main-form form-label-left">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+    <label for="title">عنوان دسترسی</label>
+    <input type="text" class="form-control" name="title" id="title" value="<%= editing || hasError ? permission.title : '' %>" />
+
+    <label for="section_title">عنوان بخش</label>
+    <select class="form-control" name="section_title" id="section_title">
+        <option class="d-none">انتخاب بخش</option>
+        <option <%= editing || hasError ?
+                permission.section_title === 'user'
+                        ? 'selected'  : ''
+                : '' %>
+                value="user">کاربر</option>
+        <option <%= editing || hasError ?
+                permission.section_title === 'product'
+                        ? 'selected'  : ''
+                : '' %>
+                value="product">محصول</option>
+        <option <%= editing || hasError ?
+                permission.section_title === 'category'
+                        ? 'selected'  : ''
+                : '' %>
+                value="category">دسته بندی</option>
+    </select>
+
+    <label for="route_url"></label>
+    <input type="text"
+           class="form-control"
+           name="route_url"
+           id="route_url"
+           placeholder="admin/permissions/add"
+           style="direction: ltr"
+           value="<%= editing || hasError ? permission.route_url : '' %>" />
+
+    <label for="description">توضیحات</label>
+    <input type="text"
+           class="form-control"
+           name="description"
+           id="description"
+           value="<%= editing || hasError ? permission.description : '' %>" />
+
+
+    <%- include('../layout/form-buttons'); %>
+</form>
+
+<%- include('../layout/form-foot'); %>
