@@ -1,15 +1,42 @@
 const _ = require('lodash');
+const Location = require('../../model/location');
+const Address = require('../../model/address');
 const Stock = require('../../model/stock');
+const Cart = require('../../model/cart');
 const Order = require('../../model/order');
 const OrderItem = require('../../model/orderItem');
 const Media = require('../../model/media');
 const Product = require('../../model/product');
 const { renderView, renderViewError } = require('../../middleware/router');
 
-const getInfo = async (req, res, next) => {
+exports.getInfo = async (req, res, next) => {
     try {
+        const user_id = req.session.user.id;
+        const cart = await Cart.findOne({
+            where: { user_id },
+            include: [{
+                model: Stock,
+                include: [Media, Product]
+            }]
+        });
+        const addresses = await Address.findAll({
+            where: { user_id: user_id },
+            include: [
+                {
+                    model: Location,
+                    as: 'state'
+                },
+                {
+                    model: Location,
+                    as: 'city'
+                }
+            ]
+        });
+
         renderView(req, res, {
-            title: 'ثبت اطلاعات گیرنده'
+            title: 'ثبت اطلاعات گیرنده',
+            cart,
+            addresses
         });
     } catch(e) {
         renderViewError(req, res, {
@@ -17,7 +44,53 @@ const getInfo = async (req, res, next) => {
         });
     }
 };
-const get = async (req, res, next) => {
+exports.save = async (req, res, next) => {
+    try {
+        const user_id = req.session.user.id;
+        const cart = await Cart.findOne({
+            where: { user_id },
+            include: [{
+                model: Stock,
+                include: [Media, Product]
+            }]
+        });
+        const description = req.body.description;
+        const address_id = req.body.address_id;
+        const body = {
+            description,
+            address_id
+        };
+        const order = await Order.create(body);
+        if(cart.stocks.length > 0) {
+            for(let c = 0 ; c < cart.stocks.length ; c++){
+                const item = cart.stocks[c];
+                const itemBody = {
+                    stock_id: item.id,
+                    // product_id: item.product.id,
+                    title: item.product.title,
+                    slug: item.product.slug,
+                    price: item.price,
+                    quantity: item.cartItem.quantity,
+                    data: "{}"
+                };
+                await order.createOrderItem(itemBody);
+            }
+        }
+        await Cart.destroy({
+            where: { user_id }
+        });
+        renderView(req, res, {
+            redirect: '/orders'
+        });
+    } catch(e) {
+        console.log(e);
+        renderViewError(req, res, {
+            errors: e
+        });
+    }
+};
+
+exports.get = async (req, res, next) => {
     try {
         const user_id = req.session.user.id;
         const data = await Order.findOne({
@@ -39,52 +112,8 @@ const get = async (req, res, next) => {
         });
     }
 };
-const save = async (req, res, next) => {
-    try {
-        const user_id = req.session.user.id;
-        const stock_id = req.params.id;
-        let order = await Order.findOne({
-            where: { user_id },
-            include: [Stock]
-        });
-        if(!order) {
-            order = await Order.create({ user_id });
-        }
-        let quantity = 1;
-        const inStock = _.find(order.stocks, s => s.id.toString() === stock_id.toString());
-        if(inStock) {
-            quantity = Number(inStock.orderItem.quantity) + 1;
-            const order_id = inStock.orderItem.order_id;
-            await OrderItem.update({ quantity }, {
-                where: {
-                    stock_id,
-                    order_id
-                }
-            });
-        } else {
-            await order.addStock(stock_id, { through: { quantity } });
-        }
-        const data = await Order.findOne({
-            where: { user_id },
-            include: [{
-                model: Stock,
-                where: {
-                    id: stock_id
-                }
-            }]
-        });
-        renderView(req, res, {
-            redirect: '/orders',
-            data
-        });
-    } catch(e) {
-        console.log(e);
-        renderViewError(req, res, {
-            errors: e
-        });
-    }
-};
-const remove = async (req, res, next) => {
+
+exports.remove = async (req, res, next) => {
     try {
         const user_id = req.session.user.id;
         const stock_id = req.params.id;
@@ -136,7 +165,7 @@ const remove = async (req, res, next) => {
         });
     }
 };
-const destroy = async (req, res, next) => {
+exports.destroy = async (req, res, next) => {
     try {
         const id = req.params.id;
         const data = await Order.destroy({
@@ -152,12 +181,4 @@ const destroy = async (req, res, next) => {
             errors: e
         });
     }
-};
-
-module.exports = {
-    getInfo,
-    get,
-    save,
-    remove,
-    destroy
 };

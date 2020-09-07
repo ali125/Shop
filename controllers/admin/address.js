@@ -49,7 +49,7 @@ exports.add = async (req, res, next) => {
 exports.save = async (req, res, next) => {
     try {
         const title = req.body.title;
-        const state_id = req.body.state_id;
+        // const state_id = req.body.state_id;
         const city_id = req.body.city_id;
         const address = req.body.address;
         const phone = req.body.phone;
@@ -57,7 +57,7 @@ exports.save = async (req, res, next) => {
         const user_id = req.session.user.id;
         const body = {
             title,
-            state_id,
+            state_id: 28,
             city_id,
             address,
             phone,
@@ -78,7 +78,7 @@ exports.save = async (req, res, next) => {
         const data = await Address.create(body);
         renderView(req, res, {
             data,
-            redirect: 'admin/addresses'
+            redirect: '/admin/addresses'
         });
     } catch(e) {
         renderViewError(req, res, {
@@ -107,14 +107,14 @@ exports.update = async (req, res, next) => {
     try {
         const id = req.params.id;
         const title = req.body.title;
-        const state_id = req.body.state_id;
+        // const state_id = req.body.state_id;
         const city_id = req.body.city_id;
         const address = req.body.address;
         const phone = req.body.phone;
         const mobile = req.body.mobile;
         const body = {
             title,
-            state_id,
+            state_id: 28,
             address,
             city_id,
             phone,

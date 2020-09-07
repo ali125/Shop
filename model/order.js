@@ -2,7 +2,7 @@ const { Model, DataTypes } = require('sequelize');
 const sequelize = require('./databaseConfig');
 const User = require('./user');
 const OrderItem = require('./orderItem');
-const Location = require('./location');
+const Address = require('./address');
 
 class Order extends Model {}
 
@@ -14,21 +14,12 @@ Order.init({
             key: 'id'
         }
     },
-    name: {
-        type: DataTypes.STRING
-    },
     description: {
         type: DataTypes.TEXT
     },
-    address: {
-        type: DataTypes.TEXT
-    },
-    state_id: {
+    address_id: {
         type: DataTypes.INTEGER
-    },
-    city_id: {
-        type: DataTypes.INTEGER
-    },
+    }
 }, {
     sequelize,
     timestamps: true,
@@ -37,20 +28,21 @@ Order.init({
     updatedAt: 'updated_at'
 });
 
+
+// OrderItem.belongsTo(Order, {
+//     foreignKey: 'order_id'
+// });
 Order.hasMany(OrderItem, {
     foreignKey: 'order_id'
 });
-OrderItem.belongsTo(Order);
+Address.hasOne(Order, {
+    foreignKey: 'address_id'
+});
 
-// Order.hasOne(Location, {
-//     foreignKey: 'state_id'
-// });
-// Order.hasOne(Location, {
-//     foreignKey: 'city_id'
-// });
 Order.hasOne(User, {
     foreignKey: 'user_id'
 });
+
 User.belongsTo(Order, {
     foreignKey: 'user_id'
 });

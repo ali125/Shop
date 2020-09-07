@@ -1,20 +1,155 @@
-<%- include('../layout/form-head', { form_title: title }); %>
+<%- include('../layout/header'); %>
+<div class="">
+    <%- include('../layout/head-page'); %>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2><%= title %></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Settings 1</a>
+                                <a class="dropdown-item" href="#">Settings 2</a>
+                            </div>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <form method="post" action="/orders/create" class="row">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <div class="col-sm-12">
+                            <h4>انتخاب آدرس</h4>
+                            <% if(addresses.length > 0) { %>
+                            <ul>
+                                <% addresses.forEach(address => { %>
+                                <li>
+                                    <label for="address_<%= address.id %>">
+                                        <input id="address_<%= address.id %>"
+                                               type="radio"
+                                               name="address_id"
+                                               value="<%= address.id %>" />
+                                        <span>
+                                            <span class="phone"> <%= address.title %> </span>
+                                            <span class="address-text">
+                                                <%= address.state.name %> -
+                                                <%= address.city.name %> -
+                                                <%= address.address %>
+                                            </span>
+                                            <span class="phone"> <%= address.phone %> </span>
+                                            <span class="mobile"> <%= address.mobile %> </span>
+                                        </span>
+                                    </label>
+                                </li>
+                                <% }) %>
+                            </ul>
+                            <% } else { %>
+                                <h4>آدرسی ثبت نشده است.</h4>
+                                <a href="/admin/addresses/add" class="btn btn-success">ثبت آدرس جدید</a>
+                            <% } %>
 
-<form method="POST" action="/admin/order/add"
-      data-parsley-validate
-      class="form-horizontal main-form form-label-left">
-    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <br />
+                            <hr />
+                            <br />
 
-    <label for="name">نام گیرنده</label>
-    <input type="text" class="form-control" name="name" id="name" required />
+                            <label for="description">توضیحات</label>
+                            <textarea class="form-control" name="description" id="description" rows="5"></textarea>
 
-    <label for="slug">توضیحات (اختیاری)</label>
-    <input type="text" class="form-control" name="slug" id="slug" />
+                            <br />
+                            <hr />
+                            <br />
 
-    <label for="slug">توضیحات (اختیاری)</label>
-    <input type="text" class="form-control" name="slug" id="slug" />
-    <%- include('../layout/form-buttons'); %>
-</form>
-
-<%- include('../layout/form-foot'); %>
-
+                            <% if(cart && cart.stocks.length > 0) { %>
+                                <div class="card-box table-responsive">
+                                    <p class="text-muted font-13 m-b-30">لیست محصولات سبد خرید</p>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">عکس</th>
+                                            <th scope="col">محصول</th>
+                                            <th scope="col">قیمت</th>
+                                            <th scope="col">تعداد</th>
+                                            <th scope="col">قیمت نهایی</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <% let totalCount = 0; %>
+                                        <% let totalPrice = 0; %>
+                                        <% cart.stocks.forEach(item =>{ %>
+                                            <% totalCount += item.cartItem.quantity; %>
+                                            <% totalPrice += item.cartItem.quantity * item.price; %>
+                                            <tr>
+                                                <td><%= item.id %></td>
+                                                <td>
+                                                    <img src="<%= item.media.length > 0 ? item.media[0].media_url : '/images/default.jpg' %>"
+                                                         alt="<%= item.product.title %>">
+                                                </td>
+                                                <td><%= item.product.title %></td>
+                                                <td><%= item.price %></td>
+                                                <td>
+                <span class="btn-group cart-quantity" data-max-count="<%= item.count %>">
+                    <a href="/api/carts/<%= item.id %>/add" class="btn btn-sm btn-default cart-add">+</a>
+                    <span class="btn btn-sm btn-default cart-quantity-label"><%= item.cartItem.quantity %></span>
+                    <a href="/api/carts/<%= item.id %>/remove" class="btn btn-sm btn-default cart-remove">-</a>
+                </span>
+                                                </td>
+                                                <td class="td-price"><%= item.cartItem.quantity * item.price %></td>
+                                            </tr>
+                                        <% }); %>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th>مالیات</th>
+                                            <td id="total-all-tax"><%= (totalPrice / 100) * 0.9 %></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <th>تعداد کل محصولات</th>
+                                            <td id="total-all-count"><%= totalCount %></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <th>مجموع قیمت محصولات</th>
+                                            <td id="total-products-price"><%= totalPrice %></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <th>مجموع کل</th>
+                                            <td id="total-all-price"><%= totalPrice + ((totalPrice / 100) * 0.9) %></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <button class="btn btn-success">ثبت نهایی</button>
+                            <% } else { %>
+                                <h1>سبد خالی میباشد.</h1>
+                            <% } %>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../layout/footer'); %>

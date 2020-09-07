@@ -277,7 +277,7 @@ $(document).ready(function() {
             type: 'GET',
             url: '/api/locations/cities?state_id=' + state_id,
             success: (res) => {
-                let cities_el = $this.parent().find('.cities-js');
+                let cities_el = $this ? $this.parent().find('.cities-js') : $('.cities-js');
                 let html = '<option class="d-none">انتخاب شهر</option>';
                 let val = null;
                 if(cities_el.data('value') !== 'false') val = Number(cities_el.data('value'));
@@ -290,34 +290,36 @@ $(document).ready(function() {
         });
     }
 
-    $.ajax({
-        credentials: 'same-origin', // <-- includes cookies in the request
-        headers: {
-            'CSRF-Token': CSRT_TOKEN // <-- is the csrf token as a header
-        },
-        type: 'GET',
-        url: '/api/locations/states',
-        success: (res) => {
-            $('.states-js').each(function(e) {
-                let html = '';
-                let val = null;
-                if($(this).data('value') !== 'false') val = Number($(this).data('value'));
-                for(let i = 0 ; i < res.data.length ; i++) {
-                    const item = res.data[i];
-                    html += `<option ${val === item.id ? 'selected' : ''} value="${item.id}">${item.name}</option>`;
-                }
-                if(val) getCities($(this), val);
-                $(this).append(html);
-            });
-        }
-    });
-
-
-    $('.states-js').on('change', function() {
-        const $this = $(this);
-        const state_id = $this.val();
-        getCities($this, state_id);
-    });
+    getCities(null, 28);
+    //
+    // $.ajax({
+    //     credentials: 'same-origin', // <-- includes cookies in the request
+    //     headers: {
+    //         'CSRF-Token': CSRT_TOKEN // <-- is the csrf token as a header
+    //     },
+    //     type: 'GET',
+    //     url: '/api/locations/states',
+    //     success: (res) => {
+    //         $('.states-js').each(function(e) {
+    //             let html = '';
+    //             let val = null;
+    //             if($(this).data('value') !== 'false') val = Number($(this).data('value'));
+    //             for(let i = 0 ; i < res.data.length ; i++) {
+    //                 const item = res.data[i];
+    //                 html += `<option ${val === item.id ? 'selected' : ''} value="${item.id}">${item.name}</option>`;
+    //             }
+    //             if(val) getCities($(this), val);
+    //             $(this).append(html);
+    //         });
+    //     }
+    // });
+    //
+    //
+    // $('.states-js').on('change', function() {
+    //     const $this = $(this);
+    //     const state_id = $this.val();
+    //     getCities($this, state_id);
+    // });
 
 });
 

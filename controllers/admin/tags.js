@@ -3,7 +3,7 @@ const Tag = require('../../model/tag');
 const { renderView, renderViewError } = require('../../middleware/router');
 const { getUniqueSlug } = require('../../utils/string');
 
-const all = async (req, res, next) => {
+exports.all = async (req, res, next) => {
     try {
         const result = await Tag.findAll();
         renderView(req, res, {
@@ -16,7 +16,7 @@ const all = async (req, res, next) => {
         });
     }
 };
-const add = async (req, res, next) => {
+exports.add = async (req, res, next) => {
     try {
         renderView(req, res, {
             title: 'افزودن تگ',
@@ -30,10 +30,10 @@ const add = async (req, res, next) => {
         });
     }
 };
-const save = async (req, res, next) => {
+exports.save = async (req, res, next) => {
     try {
         const name = req.body.name;
-        const slug = await getUniqueSlug(Tag, req.body.name, req.body.slug);
+        const slug = await getUniqueSlug(Tag, name, req.body.slug);
         const user_id = req.session.user.id;
         const body = {
             name,
@@ -66,7 +66,7 @@ const save = async (req, res, next) => {
         });
     }
 };
-const edit = async (req, res, next) => {
+exports.edit = async (req, res, next) => {
     try {
         const id = req.params.id;
         const tag = await Tag.findByPk(id);
@@ -83,7 +83,7 @@ const edit = async (req, res, next) => {
         });
     }
 };
-const update = async (req, res, next) => {
+exports.update = async (req, res, next) => {
     try {
         const id = req.params.id;
         const name = req.body.name;
@@ -120,7 +120,7 @@ const update = async (req, res, next) => {
         });
     }
 };
-const destroy = async (req, res, next) => {
+exports.destroy = async (req, res, next) => {
     try {
         const id = req.params.id;
         const tag = await Tag.destroy({
@@ -136,13 +136,4 @@ const destroy = async (req, res, next) => {
             errors: e
         });
     }
-};
-
-module.exports = {
-    all,
-    add,
-    save,
-    edit,
-    update,
-    destroy
 };

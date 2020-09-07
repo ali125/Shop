@@ -1,0 +1,39 @@
+<%- include('../layout/table-head'); %>
+<% if(data.length > 0) { %>
+    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>نقش</th>
+            <th>توضیحات</th>
+            <th>تعداد دسترسی</th>
+            <th></th>
+        </tr>
+
+        </thead>
+        <tbody>
+        <% data.forEach(item =>{ %>
+            <tr>
+                <th scope="row"><%= item.id %></th>
+                <td><%= item.title %></td>
+                <td><%= item.description %></td>
+                <td><%= item.permissions.length %></td>
+                <td>
+                    <% item.permissions.forEach(p => { %>
+                        <span class="badge badge-info"><%= p.title %></span>
+                    <% }) %>
+                </td>
+                <td>
+                    <a href="/admin/roles/<%= item.id %>/edit" class="btn btn-sm btn-warning">ویرایش</a>
+                    <a href="/admin/roles/<%= item.id %>/delete" class="btn btn-sm btn-danger">حذف</a>
+                </td>
+            </tr>
+        <% }); %>
+        </tbody>
+    </table>
+
+<% } else { %>
+    <h1>کاربری یافت نشد.</h1>
+<% } %>
+<%- include('../layout/table-foot'); %>
+

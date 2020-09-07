@@ -14,6 +14,13 @@ exports.tagValidation = [
         .isLength({ min: 2 })
 ];
 
+exports.roleValidation = [
+    body('title', 'Please fill the title field')
+        .isString()
+        .trim()
+        .isLength({ min: 2 }),
+];
+
 exports.userValidation = [
     body('first_name', 'Please fill first name field')
         .isString()
@@ -56,7 +63,7 @@ exports.addressValidation = [
         .isString()
         .trim()
         .isLength({ min: 3 }),
-    body('state_id', 'Please fill state field'),
+    // body('state_id', 'Please fill state field'),
     body('city_id', 'Please fill city field'),
     body('address', 'Please fill address field')
         .isString()

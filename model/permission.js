@@ -13,6 +13,13 @@ Permission.init({
         allowNull: false,
         unique: true
     },
+    section_title: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    route_url: {
+        type: DataTypes.STRING,
+    },
     description: {
         type: DataTypes.STRING,
         defaultValue: null

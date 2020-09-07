@@ -1,0 +1,36 @@
+<%- include('../layout/form-head'); %>
+<form method="post" action="/admin/roles/<%= editing ? role.id + '/update' : 'add' %>" data-parsley-validate class="form-horizontal main-form form-label-left">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+    <label for="title">عنوان نقش</label>
+    <input type="text" class="form-control" name="title" id="title" value="<%= editing || hasError ? role.title : '' %>" />
+
+    <label for="description">توضیحات</label>
+    <input type="text" class="form-control" name="description" id="description" value="<%= editing || hasError ? role.description : '' %>" />
+
+    <br />
+    <hr />
+    <br />
+
+    <h4>لیست دسترسی ها</h4>
+
+    <div class="form-permission-list">
+        <% permissions.forEach(item => { %>
+            <h4><%= item.title %></h4>
+            <% item.data.forEach(permission => { %>
+                <label for="<%= permission.slug %>">
+                    <input type="checkbox"
+                           id="<%= permission.slug %>"
+                           name="permissions"
+                            <%= role.permissions.indexOf(permission.id) > -1 ? 'checked' : '' %>
+                           value="<%= permission.id %>" />
+                    <%= permission.title %>
+                </label>
+            <% })%>
+        <% })%>
+    </div>
+
+    <%- include('../layout/form-buttons'); %>
+</form>
+
+<%- include('../layout/form-foot'); %>
