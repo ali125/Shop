@@ -15,6 +15,10 @@
     <h4>لیست دسترسی ها</h4>
 
     <div class="form-permission-list">
+        <label for="all-checkbox">
+            <input type="checkbox" id="all-checkbox"  />
+            انتخاب همه
+        </label>
         <% permissions.forEach(item => { %>
             <h4><%= item.title %></h4>
             <% item.data.forEach(permission => { %>

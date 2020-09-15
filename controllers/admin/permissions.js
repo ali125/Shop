@@ -21,7 +21,9 @@ const getPermission = async () => {
 
 exports.all = async (req, res, next) => {
     try {
-        const data = await Permission.findAll();
+        const data = await Permission.findAll({
+            order: ["route_url"]
+        });
         renderView(req, res, {
             title: 'لیست دسترسی ها',
             data

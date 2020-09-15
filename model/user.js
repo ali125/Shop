@@ -4,12 +4,16 @@ const jwt = require('jsonwebtoken');
 const sequelize = require('./databaseConfig');
 const TokenInstance = require('./tokenInstance');
 const Role = require('./role');
+const Permission = require('./permission');
 
 class User extends Model {
     static async findByCredentials(mobile, password) {
         const user = await User.findOne({
             where: { mobile },
-            include: Role
+            include: [{
+                model: Role,
+                include: Permission
+            }]
         });
         if(!user) {
             throw new Error('Unable to login');

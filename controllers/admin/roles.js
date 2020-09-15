@@ -155,11 +155,13 @@ exports.update = async (req, res, next) => {
         });
         const role = await Role.findByPk(id);
         await role.setPermissions(permissions_id);
+
         renderView(req, res, {
             role,
             redirect: '/admin/roles'
         });
     } catch(e) {
+        console.log(e);
         renderViewError(req, res, {
             errors: e
         });

@@ -39,34 +39,45 @@
                             <i class="fa fa-home"></i> سبد خرید
                         </a>
                     </li>
-                    <li><a><i class="fa fa-edit"></i> محصولات <span class="fa fa-chevron-down"></span></a>
+                    <% if(sectionsAllowed.indexOf('product') > -1) { %>
+                    <li>
+                        <a><i class="fa fa-edit"></i> محصولات <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="/admin/products">لیست محصولات</a></li>
                             <li><a href="/admin/products/add">افزودن محصول جدید</a></li>
                         </ul>
                     </li>
-                    <li><a><i class="fa fa-desktop"></i> کاربران <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="/admin/users">لیست کاربران</a></li>
-                            <li><a href="/admin/users/add">افزودن کاربر جدید</a></li>
-                            <li><a href="/admin/roles">لیست نقش ها</a></li>
-                            <li><a href="/admin/roles/add">افزودن نقش جدید</a></li>
-                            <li><a href="/admin/permissions">لیست دسترسی ها</a></li>
-                            <li><a href="/admin/permissions/add">افزودن دسترسی جدید</a></li>
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-table"></i> دسته بندی ها <span class="fa fa-chevron-down"></span></a>
+                    <% } %>
+                    <% if(sectionsAllowed.indexOf('user') > -1) { %>
+                        <li>
+                            <a><i class="fa fa-desktop"></i> کاربران <span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <%- include('../_/sidebar-link', { href: "/admin/users", text: "لیست کاربران", }); %>
+                                <%- include('../_/sidebar-link', { href: "/admin/users/add", text: "افزودن کاربر جدید" }); %>
+                                <%- include('../_/sidebar-link', { href: "/admin/roles", text: "لیست نقش ها", }); %>
+                                <%- include('../_/sidebar-link', { href: "/admin/roles/add", text: "افزودن نقش جدید" }); %>
+                                <%- include('../_/sidebar-link', { href: "/admin/permissions", text: "لیست دسترسی ها", }); %>
+                                <%- include('../_/sidebar-link', { href: "/admin/permissions/add", text: "افزودن دسترسی جدید" }); %>
+                            </ul>
+                        </li>
+                    <% } %>
+                    <% if(sectionsAllowed.indexOf('category') > -1) { %>
+                    <li>
+                        <a><i class="fa fa-table"></i> دسته بندی ها <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="/admin/categories">لیست دسته بندی ها</a></li>
                             <li><a href="/admin/categories/add">افزودن دسته بندی جدید</a></li>
                         </ul>
                     </li>
-                    <li><a><i class="fa fa-bar-chart-o"></i> تگ ها <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="/admin/tags">لیست تگ ها</a></li>
-                            <li><a href="/admin/tags/add">افزودن تگ جدید</a></li>
-                        </ul>
-                    </li>
+                    <% } %>
+                    <% if(sectionsAllowed.indexOf('tag') > -1) { %>
+                        <li><a><i class="fa fa-bar-chart-o"></i> تگ ها <span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li><a href="/admin/tags">لیست تگ ها</a></li>
+                                <li><a href="/admin/tags/add">افزودن تگ جدید</a></li>
+                            </ul>
+                        </li>
+                    <% } %>
                     <li><a><i class="fa fa-bar-chart-o"></i>تنظیمات <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="/admin/settings">تنظیمات</a></li>

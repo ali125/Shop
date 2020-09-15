@@ -40,6 +40,18 @@ app.use(flash());
 app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();
   res.locals.user = req.session.user;
+  res.locals.global_user = req.session.user;
+  const allowedArr = [];
+  if(req.session.user) {
+    req.session.user.role.permissions.forEach(p => {
+      if(p.section_title === 'product') allowedArr.push('product');
+      if(p.section_title === 'user') allowedArr.push('user');
+      if(p.section_title === 'category') allowedArr.push('category');
+      if(p.section_title === 'tag') allowedArr.push('tag');
+    });
+  }
+
+  res.locals.sectionsAllowed = allowedArr;
   res.locals.isLoggedIn = req.session.isLoggedIn;
   next();
 });

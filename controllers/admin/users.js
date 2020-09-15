@@ -7,7 +7,9 @@ const { renderView, renderViewError } = require('../../middleware/router');
 
 exports.all = async (req, res, next) => {
     try {
-        const result = await User.findAll();
+        const result = await User.findAll({
+            include: Role
+        });
         renderView(req, res, {
             title: 'لیست کاربران',
             users: result

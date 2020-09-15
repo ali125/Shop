@@ -1,6 +1,7 @@
 const express = require('express');
 const { viewType } = require('../../middleware/router');
 const auth = require('../../middleware/auth');
+const access = require('../../middleware/access');
 const viewRouter = express.Router();
 const apiRouter = express.Router();
 const adminAuthController = require('../../controllers/admin/auth');
@@ -28,6 +29,7 @@ viewRouter.get('/', auth, (req, res, next) => {
 viewRouter.use('/permissions', auth, adminPermissionsRouter.viewRouter);
 viewRouter.use('/roles', auth, adminRolesRouter.viewRouter);
 viewRouter.use('/users', auth, adminUsersRouter.viewRouter);
+viewRouter.use('/test/:id/:role/edit', access);
 viewRouter.use('/addresses', auth, adminAddressesRouter.viewRouter);
 viewRouter.use('/products', auth, adminProductsRouter.viewRouter);
 viewRouter.use('/tags', auth, adminTagsRouter.viewRouter);

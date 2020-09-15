@@ -8,27 +8,31 @@
             <th>نام و نام خانوادگی</th>
             <th>ایمیل</th>
             <th>موبایل</th>
+            <th>نقش</th>
             <th></th>
         </tr>
 
         </thead>
         <tbody>
-        <% users.forEach(user =>{ %>
+        <% users.forEach(usr =>{ %>
             <tr>
-                <th scope="row"><%= user.id %></th>
+                <th scope="row"><%= usr.id %></th>
                 <td>
-                    <% if(user.avatar_url) { %>
-                        <img src="<%= user.avatar_url %>" alt="<%= user.full_name %>" />
+                    <% if(usr.avatar_url) { %>
+                        <img src="<%= usr.avatar_url %>" alt="<%= usr.full_name %>" />
                     <% } else { %>
-                        <img src="/images/default-user.jpg" alt="<%= user.full_name %>" />
+                        <img src="/images/default-usr.jpg" alt="<%= usr.full_name %>" />
                     <% } %>
                 </td>
-                <td><%= user.full_name %></td>
-                <td><%= user.email %></td>
-                <td><%= user.mobile %></td>
+                <td><%= usr.full_name %></td>
+                <td><%= usr.email %></td>
+                <td><%= usr.mobile %></td>
+                <td><%= usr.role.title %></td>
                 <td>
-                    <a href="/admin/users/<%= user.id %>/edit" class="btn btn-sm btn-warning">ویرایش</a>
-                    <a href="/admin/users/<%= user.id %>/delete" class="btn btn-sm btn-danger">حذف</a>
+                    <% if(usr.role.slug !== 'admin' || usr.id !== user.id) { %>
+                    <a href="/admin/users/<%= usr.id %>/edit" class="btn btn-sm btn-warning">ویرایش</a>
+                    <a href="/admin/users/<%= usr.id %>/delete" class="btn btn-sm btn-danger">حذف</a>
+                    <% } %>
                 </td>
             </tr>
         <% }); %>

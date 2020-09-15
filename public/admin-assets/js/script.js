@@ -320,6 +320,10 @@ $(document).ready(function() {
     //     const state_id = $this.val();
     //     getCities($this, state_id);
     // });
-
+    $("#all-checkbox").on('change', function(){
+        const checked = $(this).prop('checked');
+        const checkboxes = $(this).parent().parent().find('input[type="checkbox"]:not(#all-checkbox)');
+        $(checkboxes).prop('checked', checked);
+    });
 });
 

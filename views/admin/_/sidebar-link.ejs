@@ -1,0 +1,11 @@
+
+
+<%
+    let allowed = false;
+    global_user.role.permissions.forEach(p => {
+        if(href === p.route_url) allowed = true;
+    })
+%>
+<% if(allowed) { %>
+<li><a href="<%= href %>"><%= text %></a></li>
+<% } %>

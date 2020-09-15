@@ -34,7 +34,6 @@ apiRouter.use('/orders', auth, ordersRouter.apiRouter);
 viewRouter.use('/locations', locationsRouter.viewRouter);
 apiRouter.use('/locations', locationsRouter.apiRouter);
 
-
 module.exports = {
   viewRouter,
   apiRouter

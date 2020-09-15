@@ -19,13 +19,15 @@ const renderView = (req, res, props) => {
 };
 const renderViewError = (req, res, props) => {
     const view = req.viewPath || null;
-    const errors = props.errors.toString() || {};
+    const message = props.errors.toString() || {};
+    const status = props.status || 500;
+
     if(view) {
-        return res.status(500).send({ errors });
+        // return res.status(status).send({ errors });
         // return res.send(props.errors);
-        // return res.render(view, props);
+        return res.render('error', { error: { status }, message });
     } else {
-        return res.status(500).send({ errors });
+        return res.status(status).send({ error: { status }, message });
     }
 };
 

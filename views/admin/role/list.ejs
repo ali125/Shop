@@ -6,7 +6,7 @@
             <th>#</th>
             <th>نقش</th>
             <th>توضیحات</th>
-            <th>دسترسی ها</th>
+            <th>تعداد دسترسی ها</th>
             <th></th>
         </tr>
 
@@ -18,9 +18,7 @@
                 <td><%= item.title %></td>
                 <td><%= item.description %></td>
                 <td>
-                    <% item.permissions.forEach(p => { %>
-                        <span class="badge badge-info"><%= p.title %></span>
-                    <% }) %>
+                    <%= item.permissions.length %>
                 </td>
                 <td>
                     <a href="/admin/roles/<%= item.id %>/edit" class="btn btn-sm btn-warning">ویرایش</a>

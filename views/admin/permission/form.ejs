@@ -23,6 +23,11 @@
                         ? 'selected'  : ''
                 : '' %>
                 value="category">دسته بندی</option>
+        <option <%= editing || hasError ?
+                permission.section_title === 'tag'
+                        ? 'selected'  : ''
+                : '' %>
+                value="tag">تگ</option>
     </select>
 
     <label for="route_url"></label>
