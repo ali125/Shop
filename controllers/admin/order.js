@@ -7,7 +7,27 @@ const Order = require('../../model/order');
 const OrderItem = require('../../model/orderItem');
 const Media = require('../../model/media');
 const Product = require('../../model/product');
+const User = require('../../model/user');
 const { renderView, renderViewError } = require('../../middleware/router');
+
+exports.all = async (req, res, next) => {
+    try {
+        const data = await Order.findAll({
+            include: [User, {
+                model: OrderItem
+            }]
+        });
+
+        renderView(req, res, {
+            title: 'لیست سفارشات',
+            data
+        });
+    } catch(e) {
+        renderViewError(req, res, {
+            errors: e
+        });
+    }
+};
 
 exports.getInfo = async (req, res, next) => {
     try {
@@ -56,9 +76,42 @@ exports.save = async (req, res, next) => {
         });
         const description = req.body.description;
         const address_id = req.body.address_id;
+        const address = await Address.findByPk(address_id, {
+            include: [
+                User,
+                {
+                    model: Location,
+                    as: 'state'
+                },
+                {
+                    model: Location,
+                    as: 'city'
+                }
+            ]
+        });
+        const address_text = {
+            state: {
+                id: address.state.id,
+                name: address.state.name
+            },
+            city: {
+                id: address.city.id,
+                name: address.city.name,
+            },
+            address: address.address,
+            short_address: address.short_address,
+            phone: address.phone,
+            mobile: address.mobile,
+            latitude: address.latitude,
+            longitude: address.longitude,
+            user: address.user
+        };
         const body = {
+            code: 'SH' + new Date().getTime(),
             description,
-            address_id
+            address_id,
+            user_id,
+            address: JSON.stringify(address_text)
         };
         const order = await Order.create(body);
         if(cart.stocks.length > 0) {

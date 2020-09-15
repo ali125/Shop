@@ -39,5 +39,8 @@ OrderItem.init({
 Stock.hasOne(OrderItem, {
     foreignKey: 'stock_id'
 });
+OrderItem.belongsTo(Stock, {
+    foreignKey: 'stock_id'
+});
 
 module.exports = OrderItem;

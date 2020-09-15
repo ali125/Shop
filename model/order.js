@@ -7,6 +7,10 @@ const Address = require('./address');
 class Order extends Model {}
 
 Order.init({
+    code: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     user_id: {
         type: DataTypes.INTEGER,
         references: {
@@ -14,12 +18,35 @@ Order.init({
             key: 'id'
         }
     },
+    count: {
+        type: DataTypes.VIRTUAL,
+        get() {
+            return this.orderItems.reduce(
+                (accumalatedQuantity, oItem) =>
+                    accumalatedQuantity + oItem.quantity,
+                0
+            );
+        }
+    },
+    total_price: {
+        type: DataTypes.VIRTUAL,
+        get() {
+            return this.orderItems.reduce(
+                (accumalatedQuantity, oItem) =>
+                    accumalatedQuantity + Number(oItem.price) * oItem.quantity,
+                0
+            );
+        }
+    },
     description: {
         type: DataTypes.TEXT
     },
     address_id: {
         type: DataTypes.INTEGER
-    }
+    },
+    address: {
+        type: DataTypes.TEXT
+    },
 }, {
     sequelize,
     timestamps: true,

@@ -1,0 +1,44 @@
+<%- include('../layout/table-head'); %>
+
+<% if(data && data.length > 0) { %>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">کد خرید</th>
+        <th scope="col">نام کاربر</th>
+        <th scope="col">تعداد محصولات</th>
+        <th scope="col">قیمت کل</th>
+        <th scope="col">توضیحات</th>
+        <th scope="col">تاریخ ثبت</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+        <% data.forEach(item =>{ %>
+        <tr>
+            <td><%= item.id %></td>
+            <td><%= item.code %></td>
+            <td><%= item.user ? item.user.full_name : '-' %></td>
+            <td><%= item.count %></td>
+            <td><%= item.total_price %></td>
+            <td><%= item.description %></td>
+            <td>
+                <%= item.created_at.getFullYear() %> /
+                <%= item.created_at.getMonth() + 1 %> /
+                <%= item.created_at.getDate() %>
+            </td>
+            <td>
+                <a href="/admin/orders/<%= item.id %>" class="btn btn-sm btn-info">مشاهده</a>
+            </td>
+        </tr>
+        <% }); %>
+    </tbody>
+</table>
+<% } else { %>
+    <h1>تاکنون سفارشی ثبت نشده است.</h1>
+<% } %>
+
+<%- include('../layout/table-foot'); %>
+
+

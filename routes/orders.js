@@ -6,8 +6,8 @@ const apiRouter = express.Router();
 
 
 /* GET users listing. */
-viewRouter.get('/information', viewType('admin/orders/information'), getInfo);
-viewRouter.post('/create', viewType('admin/orders/create'), save);
+viewRouter.get('/information', viewType('admin/order/information'), getInfo);
+viewRouter.post('/create', viewType('admin/order/create'), save);
 
 module.exports = {
   viewRouter,

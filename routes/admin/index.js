@@ -14,6 +14,7 @@ const adminTagsRouter = require('./tags');
 const adminCategoriesRouter = require('./categories');
 const adminMediaRouter = require('./media');
 const adminSettingsRouter = require('./settings');
+const adminOrdersRouter = require('./orders');
 
 /* GET home page. */
 viewRouter.get('/login', (req, res, next) => {
@@ -36,6 +37,7 @@ viewRouter.use('/tags', auth, adminTagsRouter.viewRouter);
 viewRouter.use('/categories', auth, adminCategoriesRouter.viewRouter);
 viewRouter.use('/media', auth, adminMediaRouter.viewRouter);
 viewRouter.use('/settings', auth, adminSettingsRouter.viewRouter);
+viewRouter.use('/orders', auth, adminOrdersRouter.viewRouter);
 
 apiRouter.use('/media', adminMediaRouter.apiRouter);
 apiRouter.use('/users', adminUsersRouter.apiRouter);

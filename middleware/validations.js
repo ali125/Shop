@@ -107,3 +107,5 @@ exports.productValidation = [
         .trim()
         .isNumeric(),
 ];
+
+exports.adminOrderValidation = [];

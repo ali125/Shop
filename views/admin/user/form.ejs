@@ -10,6 +10,11 @@
     <label for="email">ایمیل</label>
     <input type="email" class="form-control" name="email" id="email" value="<%= editing || hasError ? user.email : '' %>" />
 
+    <% if(!editing) { %>
+    <label for="password">رمز عبور</label>
+    <input type="password" class="form-control" name="password" id="password" value="<%= hasError ? user.password : '' %>" />
+    <% } %>
+
     <label for="mobile">موبایل</label>
     <input type="tel" class="form-control" name="mobile" id="mobile" value="<%= editing || hasError ? user.mobile : '' %>" />
 

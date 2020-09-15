@@ -42,13 +42,15 @@ exports.save = async (req, res, next) => {
         const last_name = req.body.last_name;
         const email = req.body.email;
         const mobile = req.body.mobile;
+        const password = req.body.password;
         const role_id = req.body.role_id;
         const body = {
             first_name,
             last_name,
             email,
             mobile,
-            role_id
+            role_id,
+            password
         };
         const errors = validationResult(req);
         if(!errors.isEmpty()) {
@@ -68,6 +70,7 @@ exports.save = async (req, res, next) => {
             redirect: '/admin/users'
         });
     } catch(e) {
+        console.log(e);
         renderViewError(req, res, {
             errors: e
         });

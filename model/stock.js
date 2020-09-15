@@ -15,6 +15,12 @@ Stock.init({
             this.setDataValue('price', Number(val));
         }
     },
+    total_price: {
+        type: DataTypes.VIRTUAL,
+        get() {
+            return this.price + ((this.price / 100) * 0.9)
+        }
+    },
     count: {
         type: DataTypes.INTEGER,
         allowNull: false,
