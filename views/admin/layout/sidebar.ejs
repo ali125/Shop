@@ -43,8 +43,8 @@
                     <li>
                         <a><i class="fa fa-edit"></i> محصولات <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="/admin/products">لیست محصولات</a></li>
-                            <li><a href="/admin/products/add">افزودن محصول جدید</a></li>
+                            <%- include('../_/sidebar-link', { href: "/admin/products" , text:"لیست محصولات " }); %>
+                            <%- include('../_/sidebar-link', { href: "/admin/products/add" , text:"افزودن محصول جدید " }); %>
                         </ul>
                     </li>
                     <% } %>
@@ -61,27 +61,36 @@
                             </ul>
                         </li>
                     <% } %>
+                    <% if(sectionsAllowed.indexOf('order') > -1) { %>
+                        <li>
+                            <a><i class="fa fa-table"></i> سفارشات ها <span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <%- include('../_/sidebar-link', { href: "/admin/orders", text: "لیست سفارشات" }); %>
+                                <%- include('../_/sidebar-link', { href: "/admin/orders/add", text: "افزودن سفارش جدید " }); %>
+                            </ul>
+                        </li>
+                    <% } %>
                     <% if(sectionsAllowed.indexOf('category') > -1) { %>
                     <li>
                         <a><i class="fa fa-table"></i> دسته بندی ها <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="/admin/categories">لیست دسته بندی ها</a></li>
-                            <li><a href="/admin/categories/add">افزودن دسته بندی جدید</a></li>
+                            <%- include('../_/sidebar-link', { href: "/admin/categories", text: "لیست دسته بندی ها " }); %>
+                            <%- include('../_/sidebar-link', { href: "/admin/categories/add", text: "افزودن دسته بندی جدید " }); %>
                         </ul>
                     </li>
                     <% } %>
                     <% if(sectionsAllowed.indexOf('tag') > -1) { %>
                         <li><a><i class="fa fa-bar-chart-o"></i> تگ ها <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                                <li><a href="/admin/tags">لیست تگ ها</a></li>
-                                <li><a href="/admin/tags/add">افزودن تگ جدید</a></li>
+                                <%- include('../_/sidebar-link', { href: "/admin/tags", text: "لیست تگ ها " }); %>
+                                <%- include('../_/sidebar-link', { href: "/admin/tags/add", text: "افزودن تگ جدید " }); %>
                             </ul>
                         </li>
                     <% } %>
                     <li><a><i class="fa fa-bar-chart-o"></i>تنظیمات <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="/admin/settings">تنظیمات</a></li>
-                            <li><a href="/admin/users/profile">تنظیمات حساب کاربری</a></li>
+                            <%- include('../_/sidebar-link', { href: "/admin/settings" , text: "تنظیمات" }); %>
+                            <%- include('../_/sidebar-link', { href: "/admin/users/profile" , text: "تنظیمات حساب کاربری" }); %>
                         </ul>
                     </li>
                 </ul>

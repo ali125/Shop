@@ -8,6 +8,7 @@ const OrderItem = require('../../model/orderItem');
 const Media = require('../../model/media');
 const Product = require('../../model/product');
 const User = require('../../model/user');
+const Termmeta = require('../../model/termmeta');
 const { renderView, renderViewError } = require('../../middleware/router');
 
 exports.all = async (req, res, next) => {
@@ -23,6 +24,33 @@ exports.all = async (req, res, next) => {
             data
         });
     } catch(e) {
+        renderViewError(req, res, {
+            errors: e
+        });
+    }
+};
+
+exports.get = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        let data = await Order.findOne({
+            where: { id },
+            include: [{
+                model: OrderItem,
+                include: [{
+                    model: Stock,
+                    include: [Termmeta, Media, Product]
+                }]
+            }]
+        });
+        // return res.send(data);
+        renderView(req, res, {
+            title: 'سفارش ' + data.code,
+            address: JSON.parse(data.address),
+            data
+        });
+    } catch(e) {
+        console.log(e);
         renderViewError(req, res, {
             errors: e
         });
@@ -134,29 +162,6 @@ exports.save = async (req, res, next) => {
         });
         renderView(req, res, {
             redirect: '/orders'
-        });
-    } catch(e) {
-        console.log(e);
-        renderViewError(req, res, {
-            errors: e
-        });
-    }
-};
-
-exports.get = async (req, res, next) => {
-    try {
-        const user_id = req.session.user.id;
-        const data = await Order.findOne({
-            where: { user_id },
-            include: [{
-                model: Stock,
-                include: [Media, Product]
-            }]
-        });
-        // return res.send(data);
-        renderView(req, res, {
-            title: 'سبد خرید',
-            data
         });
     } catch(e) {
         console.log(e);

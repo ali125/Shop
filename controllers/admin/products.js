@@ -348,7 +348,7 @@ exports.update = async (req, res, next) => {
         const title = req.body.title;
         const slug = await getUniqueSlug(Product, title, req.body.slug, id);
         let category_id = req.body.category_id;
-        let inTags = req.body.tags;
+        let inTags = req.body.tags || [];
         let content = req.body.content;
         let stocks = req.body.stock;
 

@@ -9,15 +9,20 @@
     <select class="form-control" name="section_title" id="section_title">
         <option class="d-none">انتخاب بخش</option>
         <option <%= editing || hasError ?
+                permission.section_title === 'product'
+                        ? 'selected'  : ''
+                : '' %>
+                value="product">محصول</option>
+        <option <%= editing || hasError ?
                 permission.section_title === 'user'
                         ? 'selected'  : ''
                 : '' %>
                 value="user">کاربر</option>
         <option <%= editing || hasError ?
-                permission.section_title === 'product'
+                permission.section_title === 'order'
                         ? 'selected'  : ''
                 : '' %>
-                value="product">محصول</option>
+                value="order">سفارش</option>
         <option <%= editing || hasError ?
                 permission.section_title === 'category'
                         ? 'selected'  : ''
