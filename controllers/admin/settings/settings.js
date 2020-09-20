@@ -3,7 +3,7 @@ const Term = require('../../../model/term');
 const { renderView, renderViewError } = require('../../../middleware/router');
 const { getUniqueSlug } = require('../../../utils/string');
 
-const all = async (req, res, next) => {
+exports.all = async (req, res, next) => {
     try {
         const ps = await Term.findOne({
             where: { slug: 'product-specifications' },
@@ -28,7 +28,7 @@ const all = async (req, res, next) => {
         });
     }
 };
-const add = async (req, res, next) => {
+exports.add = async (req, res, next) => {
     try {
         const product_specifications = await Term.findOne({
             where: { slug: 'product-specifications' },
@@ -54,9 +54,8 @@ const add = async (req, res, next) => {
         });
     }
 };
-const save = async (req, res, next) => {
+exports.save = async (req, res, next) => {
     try {
-        // res.send(req.body);
         const body = req.body;
         if(!body.parent_id || body.parent_id.toString() === "0") body["parent_id"] = 2;
         body["slug"] = await getUniqueSlug(Term, body.title, body.slug);
@@ -73,7 +72,7 @@ const save = async (req, res, next) => {
     }
 };
 
-const destroy = async (req, res, next) => {
+exports.destroy = async (req, res, next) => {
     try {
         const id = req.params.id;
         const data = await Term.destroy({
@@ -91,9 +90,21 @@ const destroy = async (req, res, next) => {
     }
 };
 
-module.exports = {
-    all,
-    add,
-    save,
-    destroy
+
+exports.home = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const data = await Term.destroy({
+            where: { id },
+            force: true
+        });
+        renderView(req, res, {
+            data,
+            redirect: '/admin/settings/add'
+        });
+    } catch(e) {
+        renderViewError(req, res, {
+            errors: e
+        });
+    }
 };

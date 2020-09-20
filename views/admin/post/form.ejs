@@ -1,0 +1,58 @@
+<%- include('../layout/form-head', { form_title: 'اطلاعات دسته بندی'  }); %>
+<form method="POST" action="/admin/posts/add" data-parsley-validate class="form-horizontal main-form form-label-left">
+    <div id="media_upload">
+        <% if((hasError || editing) && post.media.length > 0) { %>
+            <% post.media.forEach(item => { %>
+                <input type="hidden" name="[media][]" value="<%= item.id %>" />
+            <% }) %>
+        <% } %>
+    </div>
+    <%- include('../layout/file-uploader', {
+    upload_id: "[media][]",
+    data: (hasError || editing) && post.media ? post.media : null
+    }); %>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <label for="title">عنوان</label>
+    <input type="text" class="form-control" name="title" id="title" required value="<%= hasError || editing ? post.title : ''%>" />
+    <label for="slug">عنوانک</label>
+    <input type="text" class="form-control" name="slug" id="slug" value="<%= hasError || editing ? post.slug : ''%>" />
+    <label for="category_id">دسته بندی</label>
+    <select class="form-control js-select2-single" id="category_id" name="category_id">
+        <option value="0">بدون دسته بندی</option>
+        <% categories.forEach(category =>{ %>
+            <option <%= hasError ? post.category_id === category.id.toString() ? 'selected' : '' : '' %>
+                    <% if(editing) post.categories.forEach(categoryItem => { %>
+                        <%= (categoryItem.id === category.id) ? 'selected' : '' %>
+                    <% }) %>
+                    value="<%= category.id %>">
+                <%= category.name %>
+            </option>
+        <% }) %>
+    </select>
+
+    <label for="tags">تگ</label>
+    <select class="form-control js-select2-multiple" name="tags[]" id="tags" multiple="multiple">
+        <% tags.forEach(tag =>{ %>
+            <option <% if(hasError) post.tags.forEach(tagItem => { %>
+                        <%= (tagItem === tag.id.toString()) ? 'selected' : '' %>
+                    <% }) %>
+                    <% if(editing) post.tags.forEach(tagItem => { %>
+                        <%= (tagItem.id === tag.id) ? 'selected' : '' %>
+                    <% }) %>
+                    value="<%= tag.id %>">
+                <%= tag.name %>
+            </option>
+        <% }) %>
+    </select>
+
+    <div class="ln_solid"></div>
+
+    <label for="summernote">توضیحات</label>
+
+    <!--                        <textarea name="description" id="formEditor" class="form-editor"></textarea>-->
+    <textarea rows="5" id="summernote" name="content"><%= hasError || editing ? post.content : '' %></textarea>
+    <%- include('../layout/form-buttons'); %>
+</form>
+
+<%- include('../layout/form-foot'); %>
+

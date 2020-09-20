@@ -1,7 +1,7 @@
 <%- include('../layout/header'); %>
 <div class="">
     <%- include('../layout/head-page'); %>
-    <form method="post" action="/admin/products/add" data-parsley-validate class="form-horizontal main-form form-label-left">
+    <form method="post" action="/admin/products/<%= editing ? post.id + '/update' : 'add' %>" data-parsley-validate class="form-horizontal main-form form-label-left">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <div id="media_upload">
             <% if(hasError && product.stocks.length > 0) { %>

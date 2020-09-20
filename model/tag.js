@@ -1,6 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('./databaseConfig');
 const Product = require('./product');
+const Post = require('./post');
 const { slugify } = require('../utils/string');
 
 class Tag extends Model {
@@ -70,6 +71,27 @@ Product.belongsToMany(Tag, {
         unique: false,
         scope: {
             model_type: 'product'
+        }
+    },
+    foreignKey: 'model_id',
+    constraints: false
+});
+
+Tag.belongsToMany(Post, {
+    through: {
+        model: Tag_Model,
+        unique: false
+    },
+    foreignKey: 'tag_id',
+    constraints: false
+});
+
+Post.belongsToMany(Tag, {
+    through: {
+        model: Tag_Model,
+        unique: false,
+        scope: {
+            model_type: 'post'
         }
     },
     foreignKey: 'model_id',

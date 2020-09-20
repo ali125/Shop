@@ -383,7 +383,7 @@ exports.update = async (req, res, next) => {
             //     }
             // })
             return renderView(req, res, {
-                title: 'افزودن محصول',
+                title: 'ویرایش محصول',
                 hasError: true,
                 errorMessage: errors.array()[0].msg,
                 validationErrors: errors.array(),

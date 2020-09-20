@@ -45,7 +45,7 @@ exports.get = async (req, res, next) => {
         });
         // return res.send(data);
         renderView(req, res, {
-            title: 'سفارش ' + data.code,
+            title: 'سفارش ' + (data.code ? data.code : ''),
             address: JSON.parse(data.address),
             data
         });

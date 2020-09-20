@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('./databaseConfig');
+const Post = require('./post');
 const Product = require('./product');
 const Stock = require('./stock');
 
@@ -61,7 +62,6 @@ Media_Model.init({
     updatedAt: 'updated_at',
 });
 
-
 Stock.belongsToMany(Media, {
     through: {
         model: Media_Model,
@@ -74,6 +74,26 @@ Stock.belongsToMany(Media, {
     constraints: false
 });
 Media.belongsToMany(Stock, {
+    through: {
+        model: Media_Model,
+        unique: false
+    },
+    foreignKey: 'media_id',
+    constraints: false
+});
+
+Post.belongsToMany(Media, {
+    through: {
+        model: Media_Model,
+        unique: false,
+        scope: {
+            model_type: 'post'
+        }
+    },
+    foreignKey: 'model_id',
+    constraints: false
+});
+Media.belongsToMany(Post, {
     through: {
         model: Media_Model,
         unique: false

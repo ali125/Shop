@@ -108,4 +108,14 @@ exports.productValidation = [
         .isNumeric(),
 ];
 
+exports.postValidation = [
+    body('title', 'Please fill title field')
+        .isString()
+        .trim()
+        .isLength({ min: 3 }),
+    body('content', 'Please fill at content field')
+        .isString()
+        .trim()
+];
+
 exports.adminOrderValidation = [];

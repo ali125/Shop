@@ -1,6 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('./databaseConfig');
 const Product = require('./product');
+const Post = require('./post');
 const User = require('./user');
 const { slugify } = require('../utils/string');
 
@@ -88,6 +89,27 @@ Product.belongsToMany(Category, {
         unique: false,
         scope: {
             model_type: 'product'
+        }
+    },
+    foreignKey: 'model_id',
+    constraints: false
+});
+
+Category.belongsToMany(Post, {
+    through: {
+        model: CategoryModel,
+        unique: false
+    },
+    foreignKey: 'category_id',
+    constraints: false
+});
+
+Post.belongsToMany(Category, {
+    through: {
+        model: CategoryModel,
+        unique: false,
+        scope: {
+            model_type: 'post'
         }
     },
     foreignKey: 'model_id',

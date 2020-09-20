@@ -1,0 +1,46 @@
+<%- include('../layout/table-head'); %>
+
+<% if(data && data.length > 0) { %>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">عکس</th>
+        <th scope="col">عنوان</th>
+        <th scope="col">عنوانک</th>
+        <th scope="col">توضیحات</th>
+        <th scope="col">وضعیت</th>
+        <th scope="col">تاریخ ثبت</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+        <% data.forEach(item =>{ %>
+        <tr>
+            <td><%= item.id %></td>
+            <td><img src="<%= item.image ? item.image.media_url : '/images/default.jpg' %>" alt="<%= item.title %>"></td>
+            <td><%= item.title %></td>
+            <td><%= item.slug %></td>
+            <td><%= item.short_content %></td>
+            <td><%= item.status %></td>
+            <td>
+                <%= item.created_at.getFullYear() %> /
+                <%= item.created_at.getMonth() + 1 %> /
+                <%= item.created_at.getDate() %>
+            </td>
+            <td>
+                <a href="/admin/posts/<%= item.id %>" class="btn btn-sm btn-info">مشاهده</a>
+                <a href="/admin/posts/<%= item.id %>/edit" class="btn btn-sm btn-warning">ویرایش</a>
+                <a href="/admin/posts/<%= item.id %>/delete" class="btn btn-sm btn-danger">حذف</a>
+            </td>
+        </tr>
+        <% }); %>
+    </tbody>
+</table>
+<% } else { %>
+    <h1> پست ثبت نشده است.</h1>
+<% } %>
+
+<%- include('../layout/table-foot'); %>
+
+

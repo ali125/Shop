@@ -8,6 +8,8 @@ const apiRouter = express.Router();
 /* GET users listing. */
 viewRouter.get('/', viewType('admin/settings/index'), settingsController.all);
 
+viewRouter.get('/home', viewType('admin/settings/home'), settingsController.all);
+
 viewRouter.get('/add', viewType('admin/settings/add'), settingsController.add);
 viewRouter.post('/add', viewType('admin/settings/add'), settingsController.save);
 viewRouter.get('/:id/delete', viewType('admin/settings/add'), settingsController.destroy);

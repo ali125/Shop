@@ -45,6 +45,7 @@ app.use((req, res, next) => {
   let allowedArr = [];
   if(req.session.user) {
     req.session.user.role.permissions.forEach(p => {
+      if(p.section_title === 'post') allowedArr.push('post');
       if(p.section_title === 'product') allowedArr.push('product');
       if(p.section_title === 'user') allowedArr.push('user');
       if(p.section_title === 'order') allowedArr.push('order');

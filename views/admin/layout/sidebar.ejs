@@ -48,6 +48,15 @@
                         </ul>
                     </li>
                     <% } %>
+                    <% if(sectionsAllowed.indexOf('post') > -1) { %>
+                    <li>
+                        <a><i class="fa fa-edit"></i> پست ها <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <%- include('../_/sidebar-link', { href: "/admin/posts" , text:"لیست پست ها " }); %>
+                            <%- include('../_/sidebar-link', { href: "/admin/posts/add" , text:"افزودن پست جدید " }); %>
+                        </ul>
+                    </li>
+                    <% } %>
                     <% if(sectionsAllowed.indexOf('user') > -1) { %>
                         <li>
                             <a><i class="fa fa-desktop"></i> کاربران <span class="fa fa-chevron-down"></span></a>
