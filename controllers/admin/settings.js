@@ -1,7 +1,11 @@
 const { Op } = require("sequelize");
-const Term = require('../../../model/term');
-const { renderView, renderViewError } = require('../../../middleware/router');
-const { getUniqueSlug } = require('../../../utils/string');
+const Term = require('../../model/term');
+const Post = require('../../model/post');
+const Product = require('../../model/product');
+const Stock = require('../../model/stock');
+const Media = require('../../model/media');
+const { renderView, renderViewError } = require('../../middleware/router');
+const { getUniqueSlug } = require('../../utils/string');
 
 exports.all = async (req, res, next) => {
     try {
@@ -93,14 +97,20 @@ exports.destroy = async (req, res, next) => {
 
 exports.home = async (req, res, next) => {
     try {
-        const id = req.params.id;
-        const data = await Term.destroy({
-            where: { id },
-            force: true
+        const sliders = await Post.findAll({
+            include: [Media],
+            where: { type: 'slider' }
+        });
+        const products = await Product.findAll({
+            include: [{
+                model: Stock,
+                include: [Media]
+            }]
         });
         renderView(req, res, {
-            data,
-            redirect: '/admin/settings/add'
+            title: 'تنظیمات صفحه اصلی',
+            sliders,
+            products
         });
     } catch(e) {
         renderViewError(req, res, {

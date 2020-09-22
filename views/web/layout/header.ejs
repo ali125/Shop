@@ -2,38 +2,131 @@
 <html>
 <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/css/bootstrap.min.css' />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel='stylesheet' href='/css/fontiran.css' />
     <link rel='stylesheet' href='/css/style.css' />
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<header>
+    <a href="/" class="header-banner">
+        <img src="https://picsum.photos/id/2/1400/80.jpg" alt="" />
+    </a>
+    <div class="header-nav-container">
+        <div class="container">
+            <div class="header-nav">
+                <ul class="header-contact">
+                    <li>
+                        <a href="tel:02166554433">
+                            <i class="fas fa-phone-volume"></i>
+                            <span class="txt-link">021-66554433</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mail:manager@shop.com">
+                            <i class="fas fa-envelope"></i>
+                            <span class="txt-link">manager@shop.com</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="header-links">
+                    <li>
+                        <a href="">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span class="txt-link">موقعیت</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <i class="fab fa-blogger-b"></i>
+                            <span class="txt-link">وبلاگ</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <i class="fas fa-shield-alt"></i>
+                            <span class="txt-link">ضمانت</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <i class="fas fa-credit-card"></i>
+                            <span class="txt-link">پرداخت</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <i class="fas fa-truck"></i>
+                            <span class="txt-link">تحویل و بازگشت</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <i class="fas fa-user"></i>
+                            <span class="txt-link">عضویت و ثبت نام</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<nav class="navbar-container">
     <div class="container">
-        <a class="navbar-brand" href="/">ICE SHOP</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Shop <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="/" tabindex="-1" aria-disabled="true">Blog</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/page/about-us">About Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/page/contact-us">Contact Us</a>
-                </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+        <div class="navbar">
+            <a class="brand" href="/">ICE SHOP</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="search-container">
+                <form class="search">
+                    <input type="search" />
+                    <button><i class="fas fa-search"></i></button>
+                </form>
+                <ul class="search-autocomplete">
+                    <li class="search-item">
+                        <a href="">
+                            <img src="https://picsum.photos/id/175/150/150" alt="" />
+                            <span class="detail">
+                           <span class="title">Product Title</span>
+                           <span class="price">100,000 تومان</span>
+                       </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="header-buttons">
+                <div class="header-basket">
+                    <button class="header-basket-button">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="basket-info">
+                            <span class="title">سبد خرید</span>
+                            <span class="total-price">0,00 تومان</span>
+                        </span>
+                        <span class="basket-count">4</span>
+                    </button>
+                    <div class="header-basket-list">
+                        <ul>
+                            <li>
+                                <a href="">
+                                    <img src="https://picsum.photos/id/175/150/150" alt="" />
+                                    <span class="detail">
+                                   <span class="title">Product Title</span>
+                                   <span class="price">100,000 تومان</span>
+                               </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="header-favorite">
+                    <a href="/" class="header-basket-button">
+                        <i class="far fa-heart"></i>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </nav>

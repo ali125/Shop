@@ -1,0 +1,38 @@
+* {
+  direction: rtl;
+  text-align: right;
+}
+body {
+  font: 14px IRANSans, "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: #00B7FF;
+  text-decoration: none;
+}
+
+.container {
+  width: 90%;
+  max-width: 90%;
+  margin: auto;
+}
+
+@media only screen and (max-width: 765px){
+  .container {
+    width: 95%;
+    max-width: 95%;
+  }
+}
+@media only screen and (max-width: 500px){
+  .container {
+    width: 100%;
+    max-width: 100%;
+  }
+}

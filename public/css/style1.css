@@ -1,0 +1,92 @@
+* {
+  direction: rtl;
+  text-align: right;
+}
+body {
+  font: 14px IRANSans, "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+  text-decoration: none;
+}
+
+.header-banner {
+  width: 100%;
+  height: 50px;
+}
+.header-banner img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.header-nav-container {
+  width: 100%;
+  background-color: #333;
+  padding: 3px 0;
+}
+.header-nav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-contact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+.header-links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+.header-nav a {
+  font-size: 11px;
+  display: inline-block;
+  color: #fff;
+  padding: 5px 10px;
+  text-decoration: none;
+}
+.header-nav a svg,
+.header-nav a i {
+  margin-left: 4px;
+}
+.header-nav .header-links a {
+  font-size: 10px;
+}
+
+
+.head-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0;
+  margin: 1rem 0;
+}
+.head-page h1 {
+  font-size: 1.5rem;
+}
+
+table td,
+table th{
+  text-align: center;
+}
+
+table img {
+  font-size: 0;
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-image: url("/images/default-user.jpg");
+  background-size: contain;
+  background-position: center center;
+  background-position: center center;
+  object-fit: cover;
+}

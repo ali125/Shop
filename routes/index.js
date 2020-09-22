@@ -8,7 +8,7 @@ const apiRouter = express.Router();
 
 /* GET home page. */
 viewRouter.get('/', (req, res, next) => {
-  res.render('index', { title: 'Express' });
+  res.render('web/index', { title: 'Express' });
 });
 
 // viewRouter.get('/test-email', (req, res, next) => {

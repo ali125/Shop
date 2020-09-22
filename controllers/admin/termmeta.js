@@ -1,6 +1,6 @@
-const Term = require('../../../model/term');
-const Term_Meta = require('../../../model/termmeta');
-const { renderView, renderViewError } = require('../../../middleware/router');
+const Term = require('../../model/term');
+const Term_Meta = require('../../model/termmeta');
+const { renderView, renderViewError } = require('../../middleware/router');
 
 const all = async (req, res, next) => {
     try {

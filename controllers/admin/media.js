@@ -2,12 +2,11 @@ const Media = require('../../model/media');
 const Product = require('../../model/product');
 const { renderView, renderViewError } = require('../../middleware/router');
 
-const all = async (req, res, next) => {
+exports.all = async (req, res, next) => {
     try {
         const result = await Media.findAll({
             include: [Product]
         });
-//         res.send(result);
         renderView(req, res, {
             title: 'لیست عکس ها',
             media: result
@@ -18,7 +17,7 @@ const all = async (req, res, next) => {
         });
     }
 };
-const add = async (req, res, next) => {
+exports.add = async (req, res, next) => {
     try {
         renderView(req, res, {
             title: 'افزودن عکس'
@@ -30,7 +29,7 @@ const add = async (req, res, next) => {
         });
     }
 };
-const save = async (req, res, next) => {
+exports.save = async (req, res, next) => {
     try {
     if(req.files.file && req.files.file[0]) {
         const file = req.files.file[0];
@@ -55,7 +54,7 @@ const save = async (req, res, next) => {
         });
     }
 };
-const edit = async (req, res, next) => {
+exports.edit = async (req, res, next) => {
     try {
         const id = req.params.id;
         const media = await Media.findByPk(id);
@@ -70,7 +69,7 @@ const edit = async (req, res, next) => {
         });
     }
 };
-const update = async (req, res, next) => {
+exports.update = async (req, res, next) => {
     try {
         const id = req.params.id;
         const media = await Media.update(req.body,{
@@ -86,7 +85,7 @@ const update = async (req, res, next) => {
         });
     }
 };
-const destroy = async (req, res, next) => {
+exports.destroy = async (req, res, next) => {
     try {
         const id = req.params.id;
 
@@ -94,11 +93,6 @@ const destroy = async (req, res, next) => {
             where: { id },
             force: true
         });
-
-//         const media = await Media.destroy({
-//             where: { id },
-//             force: true
-//         });
         renderView(req, res, {
             media,
             redirect: '/admin/media'
@@ -108,13 +102,4 @@ const destroy = async (req, res, next) => {
             errors: e
         });
     }
-};
-
-module.exports = {
-    all,
-    add,
-    save,
-    edit,
-    update,
-    destroy
 };

@@ -9,6 +9,7 @@ const { getUniqueSlug } = require('../../utils/string');
 exports.all = async (req, res, next) => {
     try {
         const data = await Post.findAll({
+            where: { type: 'post' },
             include: [Media]
         });
         renderView(req, res, {

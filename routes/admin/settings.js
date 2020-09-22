@@ -1,14 +1,14 @@
 const express = require('express');
 const { viewType } = require('../../middleware/router');
-const settingsController= require('../../controllers/admin/settings/settings');
-const termmetaController = require('../../controllers/admin/settings/termmeta');
+const settingsController= require('../../controllers/admin/settings');
+const termmetaController = require('../../controllers/admin/termmeta');
 const viewRouter = express.Router();
 const apiRouter = express.Router();
 
 /* GET users listing. */
 viewRouter.get('/', viewType('admin/settings/index'), settingsController.all);
 
-viewRouter.get('/home', viewType('admin/settings/home'), settingsController.all);
+viewRouter.get('/home', viewType('admin/settings/home'), settingsController.home);
 
 viewRouter.get('/add', viewType('admin/settings/add'), settingsController.add);
 viewRouter.post('/add', viewType('admin/settings/add'), settingsController.save);

@@ -31,9 +31,16 @@ Product.init({
     image_url: {
         type: DataTypes.STRING,
         get() {
-            return this.getDataValue('image_url') ?
-                this.getDataValue('image_url').substr(6) : null;
+            const image_url = typeof this.stocks !== "undefined" && this.stocks.length > 0 ?
+                    typeof this.stocks[0].media !== "undefined" && this.stocks[0].media.length > 0 ?
+                    this.stocks[0].media[0] : null
+                : null;
+            return image_url
         }
+        // get() {
+        //     return this.getDataValue('image_url') ?
+        //         this.getDataValue('image_url').substr(6) : null;
+        // }
     },
     content: {
         type: DataTypes.TEXT
