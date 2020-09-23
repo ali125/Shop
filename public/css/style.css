@@ -37,6 +37,19 @@ a {
     max-width: 100%;
   }
 }
+header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  padding-top: 12.7rem;
+}
+
 .header-banner {
   display: block;
   width: 100%;
@@ -106,6 +119,22 @@ a {
 .navbar-container .navbar-toggler {
   display: none;
 }
+.navbar-container .navbar-toggler {
+  background: none;
+  border: 0;
+}
+.navbar-container .navbar-toggler .bars {
+  width: 1.8rem;
+  height: 1.5rem;
+  display: block;
+}
+.navbar-container .navbar-toggler .bars .bar {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: #333;
+  margin: 0.25rem 0;
+}
 
 .search-container {
   flex: 1;
@@ -141,6 +170,7 @@ a {
   height: 100%;
   color: #fff;
   background-color: #FFA000;
+  outline: none;
 }
 
 .header-buttons {
@@ -185,6 +215,52 @@ a {
   margin-right: 0.5rem;
 }
 
+.navbar-navigations ul {
+  list-style: none;
+  background-color: #FFF;
+  padding: 0;
+}
+.navbar-navigations a {
+  display: block;
+  color: #333;
+  padding: 0.6rem 0.4rem;
+}
+.navbar-navigations > ul {
+  display: flex;
+}
+.navbar-navigations > ul li:hover > a {
+  background-color: #FFA000;
+  color: #fff !important;
+}
+.navbar-navigations > ul li:hover > ul {
+  display: block;
+}
+.navbar-navigations > ul > li {
+  position: relative;
+}
+.navbar-navigations > ul > li > a {
+  padding: 0.5rem 1rem;
+}
+.navbar-navigations > ul > li ul {
+  display: none;
+  width: 10rem;
+  position: absolute;
+  box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+.navbar-navigations > ul > li > ul {
+  top: 2.4rem;
+  right: 0;
+}
+.navbar-navigations > ul > li > ul > li {
+  position: relative;
+}
+.navbar-navigations > ul > li > ul > li > ul {
+  top: 0;
+  right: 10rem;
+  box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
 @media only screen and (max-width: 900px) {
   .header-nav-container .header-nav a {
     padding: 5px;
@@ -207,6 +283,38 @@ a {
 
   .header-buttons .header-basket-button .basket-info {
     display: none;
+  }
+
+  .navbar-toggler {
+    display: block;
+  }
+
+  .navbar-navigations {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 12rem;
+    max-width: 50%;
+    height: 100%;
+    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+  }
+  .navbar-navigations > ul {
+    flex-direction: column;
+  }
+  .navbar-navigations > ul > li {
+    border-bottom: 1px solid #eee;
+  }
+  .navbar-navigations > ul > li.all > a {
+    font-size: 1.2rem;
+    color: #FFA000;
+  }
+  .navbar-navigations > ul > li:last-child {
+    border-bottom: 0;
+  }
+  .navbar-navigations > ul > li > ul {
+    right: 12rem;
+    top: 0;
   }
 }
 @media (max-width: 500px) {

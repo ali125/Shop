@@ -72,63 +72,107 @@
             </div>
         </div>
     </div>
-</header>
-<nav class="navbar-container">
-    <div class="container">
-        <div class="navbar">
-            <a class="brand" href="/">ICE SHOP</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="search-container">
-                <form class="search">
-                    <input type="search" />
-                    <button><i class="fas fa-search"></i></button>
-                </form>
-                <ul class="search-autocomplete">
-                    <li class="search-item">
-                        <a href="">
-                            <img src="https://picsum.photos/id/175/150/150" alt="" />
-                            <span class="detail">
+    <nav class="navbar-container">
+        <div class="container">
+            <div class="navbar">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="bars">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                </button>
+                <a class="brand" href="/">ICE SHOP</a>
+                <div class="search-container">
+                    <form class="search">
+                        <input type="search" />
+                        <button><i class="fas fa-search"></i></button>
+                    </form>
+                    <ul class="search-autocomplete">
+                        <li class="search-item">
+                            <a href="">
+                                <img src="https://picsum.photos/id/175/150/150" alt="" />
+                                <span class="detail">
                            <span class="title">Product Title</span>
                            <span class="price">100,000 تومان</span>
                        </span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="header-buttons">
-                <div class="header-basket">
-                    <button class="header-basket-button">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="basket-info">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="header-buttons">
+                    <div class="header-basket">
+                        <button class="header-basket-button">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="basket-info">
                             <span class="title">سبد خرید</span>
                             <span class="total-price">0,00 تومان</span>
                         </span>
-                        <span class="basket-count">4</span>
-                    </button>
-                    <div class="header-basket-list">
-                        <ul>
-                            <li>
-                                <a href="">
-                                    <img src="https://picsum.photos/id/175/150/150" alt="" />
-                                    <span class="detail">
+                            <span class="basket-count">4</span>
+                        </button>
+                        <div class="header-basket-list">
+                            <ul>
+                                <li>
+                                    <a href="">
+                                        <img src="https://picsum.photos/id/175/150/150" alt="" />
+                                        <span class="detail">
                                    <span class="title">Product Title</span>
                                    <span class="price">100,000 تومان</span>
                                </span>
-                                </a>
-                            </li>
-                        </ul>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="header-favorite">
+                        <a href="/" class="header-basket-button">
+                            <i class="far fa-heart"></i>
+                        </a>
                     </div>
                 </div>
-                <div class="header-favorite">
-                    <a href="/" class="header-basket-button">
-                        <i class="far fa-heart"></i>
-                    </a>
-                </div>
+            </div>
+
+            <div class="navbar-navigations">
+                <ul>
+                    <li class="all">
+                        <a href="">All Categories</a>
+                        <ul>
+                            <% [1,2,3,4,5].forEach(i => { %>
+                                <li>
+                                    <a href="">Category <%= i %></a>
+                                    <ul>
+                                        <li>
+                                            <a href="">Sub Category <%= i %></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </li>
+                    <% [1,2,3,4,5].forEach(l => { %>
+                        <li>
+                            <a href="">Navigation <%= l %></a>
+                            <ul>
+                                <% [1,2,3,4,5].forEach(i => { %>
+                                    <li>
+                                        <a href="">Sub Navigation <%= i %></a>
+                                        <ul>
+                                            <% [1,2,3,4,5].forEach(j => { %>
+                                                <li>
+                                                    <a href="">Sub sub Navigation <%= j %></a>
+                                                </li>
+                                            <% }) %>
+                                        </ul>
+                                    </li>
+                                <% }) %>
+                            </ul>
+                        </li>
+                    <% }) %>
+                </ul>
             </div>
         </div>
-    </div>
-</nav>
+
+    </nav>
+</header>
 
 <div class="container">

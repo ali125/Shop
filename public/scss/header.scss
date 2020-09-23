@@ -1,4 +1,15 @@
 
+header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 0 3px 1px rgba(0,0,0,0.1);
+}
+body {
+  padding-top: 12.7rem;
+}
 .header-banner {
   display: block;
   width: 100%;
@@ -66,6 +77,22 @@
   .navbar-toggler {
     display: none;
   }
+  .navbar-toggler {
+    background: none;
+    border: 0;
+    .bars {
+      width: 1.8rem;
+      height: 1.5rem;
+      display: block;
+      .bar {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background-color: #333;
+        margin: 0.25rem 0;
+      }
+    }
+  }
 }
 .search-container {
   flex: 1;
@@ -99,6 +126,7 @@
       height: 100%;
       color: #fff;
       background-color: $orange;
+      outline: none;
     }
   }
 }
@@ -144,7 +172,57 @@
   }
 }
 
-
+.navbar-navigations {
+  ul {
+    list-style: none;
+    background-color: #FFF;
+    padding: 0;
+  }
+  a {
+    display: block;
+    color: #333;
+    padding: 0.6rem 0.4rem;
+  }
+  & > ul {
+    display: flex;
+    li {
+      &:hover{
+        & > a {
+          background-color: $orange;
+          color: #fff !important;
+        }
+        & > ul {
+          display: block;
+        }
+      }
+    }
+    & > li {
+      position: relative;
+      & > a {
+        padding: 0.5rem 1rem;
+      }
+      ul {
+        display: none;
+        width: 10rem;
+        position: absolute;
+        box-shadow: 0 1px 3px 1px rgba(0,0,0,0.2);
+        z-index: 10;
+      }
+      & > ul {
+        top: 2.4rem;
+        right: 0;
+        & > li {
+          position: relative;
+          & > ul {
+            top: 0;
+            right: 10rem;
+            box-shadow: 0 1px 2px 1px rgba(0,0,0,0.2);
+          }
+        }
+      }
+    }
+  }
+}
 @media only screen and (max-width: 900px){
   .header-nav-container {
     .header-nav {
@@ -178,6 +256,38 @@
     .header-basket-button {
       .basket-info {
         display: none;
+      }
+    }
+  }
+  .navbar-toggler {
+    display: block;
+  }
+  .navbar-navigations {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 12rem;
+    max-width: 50%;
+    height: 100%;
+    box-shadow: 0 0 3px 1px rgba(0,0,0,0.1);
+    z-index: 50;
+    & > ul {
+      flex-direction: column;
+      & > li {
+        border-bottom: 1px solid #eee;
+        &.all {
+          & > a {
+            font-size: 1.2rem;
+            color: $orange;
+          }
+        }
+        &:last-child {
+          border-bottom: 0;
+        }
+        & > ul {
+          right: 12rem;
+          top: 0;
+        }
       }
     }
   }
