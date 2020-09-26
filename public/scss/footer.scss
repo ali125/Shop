@@ -1,0 +1,97 @@
+footer {
+  background-color: #000;
+  .footer {
+    background-color: #212121;
+    padding: 1rem;
+    .links-sections {
+      display: flex;
+      flex-wrap: wrap;
+      h4 {
+        font-size: 1rem;
+        color: #FFF;
+        margin-bottom: 0;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      a, p {
+        font-size: .75rem;
+        display: block;
+        width: 100%;
+        color: #CCC;
+        padding: 0.25rem 0;
+      }
+      .subscribe-section,
+      .links-section {
+        width: 20%;
+      }
+    }
+    .subscribe-form {
+      position: relative;
+      border-radius: 5rem;
+      overflow: hidden;
+      input {
+        width: 100%;
+        padding: 0.6rem;
+        font-size: 0.9rem;
+        border: 0;
+        box-sizing: border-box;
+        &::placeholder {
+          font-size: 0.8rem;
+        }
+      }
+      button {
+        font-size: 1rem;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 3rem;
+        height: 100%;
+        z-index: 3;
+        border: 0;
+        outline: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFF;
+        background-color: $orange;
+      }
+    }
+  }
+  .copyright {
+    font-size: 0.8rem;
+    width: 100%;
+    color: #CCC;
+    text-align: center;
+  }
+}
+
+@media (max-width: 765px){
+  footer {
+    .footer {
+      .links-sections {
+        .links-section {
+          width: 25%;
+        }
+        .subscribe-section {
+          width: 50%;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 600px){
+  footer {
+    .footer {
+      .links-sections {
+        .links-section {
+          width: 50%;
+        }
+        .subscribe-section {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

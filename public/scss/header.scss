@@ -6,6 +6,7 @@ header {
   width: 100%;
   background-color: #fff;
   box-shadow: 0 0 3px 1px rgba(0,0,0,0.1);
+  z-index: 50;
 }
 body {
   padding-top: 12.7rem;
@@ -270,6 +271,7 @@ body {
     max-width: 50%;
     height: 100%;
     box-shadow: 0 0 3px 1px rgba(0,0,0,0.1);
+    background-color: #FFF;
     z-index: 50;
     & > ul {
       flex-direction: column;
